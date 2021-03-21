@@ -8,4 +8,9 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="bunit" Version="1.0.0-preview-01" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+  </ItemGroup>
+
 </Project>
