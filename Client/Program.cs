@@ -21,6 +21,7 @@ namespace CIAHome.Client
 			builder.Services.AddMudServices();
 			builder.Services.AddMudBlazorDialog();
 			builder.Services.AddMudBlazorSnackbar();
+			builder.Services.AddScoped<ITodoService, TodoService>();
 
 			builder.Services.AddScoped<IThemeProvider, ThemeProvider>();
 
