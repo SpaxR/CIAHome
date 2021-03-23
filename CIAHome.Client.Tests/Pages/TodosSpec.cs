@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Bunit;
 using CIAHome.Client.Components;
 using CIAHome.Client.Pages;
@@ -13,13 +14,17 @@ namespace CIAHome.Client.Tests.Pages
 {
 	public sealed class TodosSpec : TestContext
 	{
-		private readonly IRenderedComponent<Todos> _sut;
+		private          IRenderedComponent<Todos> _sut;
 		private readonly Mock<ITodoService>        _todoServiceMock = new();
 
 		public TodosSpec()
 		{
 			JSInterop.Mode = JSRuntimeMode.Loose;
 			Services.AddScoped(_ => _todoServiceMock.Object);
+		}
+
+		private void CreateSUT()
+		{
 			_sut = RenderComponent<Todos>();
 		}
 
@@ -36,11 +41,23 @@ namespace CIAHome.Client.Tests.Pages
 		{
 			var lists = new List<TodoList> {new(), new(), new(),};
 			_todoServiceMock.Setup(s => s.TodoListsAsync()).ReturnsAsync(lists);
-			_sut.Render();
-			
+			CreateSUT();
+
 			var result = _sut.FindComponents<TodoListItem>();
 
 			Assert.Equal(lists.Count, result.Count);
+		}
+
+		[Fact]
+		public void contains_TodoItem_foreach_uncategorized_Todo()
+		{
+			var todos = new List<Todo> {new(), new(), new(),};
+			_todoServiceMock.Setup(s => s.TodosAsync(null)).ReturnsAsync(todos);
+			CreateSUT();
+
+			var result = _sut.FindComponents<TodoItem>();
+
+			Assert.Equal(todos.Count, result.Count);
 		}
 	}
 }

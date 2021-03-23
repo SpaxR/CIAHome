@@ -1,13 +1,33 @@
 ﻿@page "/todos"
-@inject ITodoService TodoService
+@using CIAHome.Shared.Model
 
-@foreach (var list in TodoService.TodoListsAsync().Result)
+@foreach (var list in _lists)
 {
     <TodoListItem></TodoListItem>
+}
+
+@foreach (var todo in _uncategorized)
+{
+    <TodoItem></TodoItem>
 }
 
 <MudButton></MudButton>
 
 @code {
+
+    [Inject]
+    ITodoService TodoService { get; set; }
+
+    private IEnumerable<TodoList> _lists;
+    private IEnumerable<Todo> _uncategorized;
+
+    /// <inheritdoc />
+    protected override async Task OnInitializedAsync()
+    {
+        _lists = await TodoService.TodoListsAsync();
+        _uncategorized = await TodoService.TodosAsync(null);
+        StateHasChanged();
+    }
+
 
 }
