@@ -1,33 +1,51 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using CIAHome.Shared.Model;
 
 namespace CIAHome.Client.Services
 {
 	public interface ITodoService
 	{
-		IEnumerable<Todo> FindAll();
-		void Create();
-		void Delete();
+		Task<Todo>                  CreateTodoAsync();
+		Task<TodoList>              CreateTodoListAsync();
+		Task<IEnumerable<Todo>>     TodosAsync(string listId);
+		Task<IEnumerable<TodoList>> TodoListsAsync();
 	}
-	
+
 	public class TodoService : ITodoService
 	{
+		private readonly IList<Todo>     _todos = new List<Todo>();
+		private readonly IList<TodoList> _lists = new List<TodoList>();
+
 		/// <inheritdoc />
-		public IEnumerable<Todo> FindAll()
+		public Task<Todo> CreateTodoAsync()
 		{
-			throw new System.NotImplementedException();
+			var todo = new Todo();
+			_todos.Add(todo);
+
+			return Task.FromResult(todo);
 		}
 
 		/// <inheritdoc />
-		public void Create()
+		public Task<TodoList> CreateTodoListAsync()
 		{
-			throw new System.NotImplementedException();
+			var list = new TodoList();
+			_lists.Add(list);
+
+			return Task.FromResult(list);
 		}
 
 		/// <inheritdoc />
-		public void Delete()
+		public Task<IEnumerable<Todo>> TodosAsync(string listId)
 		{
-			throw new System.NotImplementedException();
+			return Task.FromResult(_todos.AsEnumerable());
+		}
+
+		/// <inheritdoc />
+		public Task<IEnumerable<TodoList>> TodoListsAsync()
+		{
+			return Task.FromResult(_lists.AsEnumerable());
 		}
 	}
 }

@@ -1,6 +1,13 @@
 ﻿@page "/todos"
-<h3>Todo's</h3>
+@inject ITodoService TodoService
+
+@foreach (var list in TodoService.TodoListsAsync().Result)
+{
+    <TodoListItem></TodoListItem>
+}
+
+<MatButton></MatButton>
 
 @code {
-    
+
 }
