@@ -9,6 +9,7 @@
     &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Pages.TodosSpec.contains_add_button&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Pages.TodosSpec.Test&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Pages.TodosSpec.contains_TodoListItem_foreach_TodoList&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Pages.TodosSpec&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6b4d9817_002D3467_002D4f07_002Db401_002Dd22a0ce70170/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CreateTodoAsync_returns_new_Todo #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
