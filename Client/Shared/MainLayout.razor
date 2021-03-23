@@ -6,9 +6,11 @@
         <MudButton Link="/">CIAHome</MudButton>
         <MudAppBarSpacer/>
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+    
+    <MudDrawer @bind-Open="_drawerOpen" Variant="DrawerVariant.Persistent" ClipMode="DrawerClipMode.Docked" Elevation="2">
         <NavMenu/>
     </MudDrawer>
+    
     <MudMainContent>
         @Body
     </MudMainContent>

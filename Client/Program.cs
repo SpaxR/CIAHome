@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CIAHome.Client.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
@@ -20,6 +21,8 @@ namespace CIAHome.Client
 			builder.Services.AddMudServices();
 			builder.Services.AddMudBlazorDialog();
 			builder.Services.AddMudBlazorSnackbar();
+
+			builder.Services.AddScoped<ThemeProvider>();
 
 			await builder.Build().RunAsync();
 		}
