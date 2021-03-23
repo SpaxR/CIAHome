@@ -4,9 +4,9 @@ using CIAHome.Client.Components;
 using CIAHome.Client.Pages;
 using CIAHome.Client.Services;
 using CIAHome.Shared.Model;
-using MatBlazor;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using MudBlazor;
 using Xunit;
 
 namespace CIAHome.Client.Tests.Pages
@@ -26,7 +26,7 @@ namespace CIAHome.Client.Tests.Pages
 		[Fact]
 		public void contains_add_button()
 		{
-			var button = _sut.FindComponent<MatButton>();
+			var button = _sut.FindComponent<MudButton>();
 
 			Assert.NotNull(button);
 		}
