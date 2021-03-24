@@ -1,59 +1,74 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
+using CIAHome.Server.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CIAHome.Server
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+	public class Startup
+	{
+		public Startup(IConfiguration configuration)
+		{
+			Configuration = configuration;
+		}
 
-        public IConfiguration Configuration { get; }
+		public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
+		// This method gets called by the runtime. Use this method to add services to the container.
+		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddDbContext<CIADbContext>(_ => _.UseInMemoryDatabase("CIADB"));
 
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-        }
+			services.AddDefaultIdentity<CIAUser>().AddEntityFrameworkStores<CIADbContext>();
+			
+			services.Configure<IdentityOptions>(options =>
+			{
+				options.Password.RequireDigit           = false;
+				options.Password.RequireLowercase       = false;
+				options.Password.RequireNonAlphanumeric = false;
+				options.Password.RequireUppercase       = false;
+				options.Password.RequiredLength         = 1;
+			});
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseWebAssemblyDebugging();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+			services.AddControllersWithViews();
+			services.AddRazorPages();
+		}
 
-            app.UseHttpsRedirection();
-            app.UseBlazorFrameworkFiles();
-            app.UseStaticFiles();
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+				app.UseWebAssemblyDebugging();
+			}
+			else
+			{
+				app.UseExceptionHandler("/Error");
+				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+				app.UseHsts();
+			}
 
-            app.UseRouting();
+			app.UseHttpsRedirection();
+			app.UseBlazorFrameworkFiles();
+			app.UseStaticFiles();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapRazorPages();
-                endpoints.MapControllers();
-                endpoints.MapFallbackToFile("index.html");
-            });
-        }
-    }
+			app.UseRouting();
+
+			app.UseAuthentication();
+			app.UseAuthorization();
+			
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapRazorPages();
+				endpoints.MapControllers();
+				endpoints.MapFallbackToFile("index.html");
+			});
+		}
+	}
 }
