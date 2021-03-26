@@ -1,0 +1,25 @@
+﻿@page "/login"
+@using CIAHome.Shared.Models
+@using CIAHome.Shared
+
+<EditForm Model="_userInput" OnValidSubmit="OnSubmit">
+    <MudTextField @bind-Value="_userInput.Username" Immediate="true" Label="Username" Required="true"/>
+    <MudTextField @bind-Value="_userInput.Password" Immediate="true" Label="Password" Required="true" InputType="InputType.Password"/>
+    <MudCheckBox @bind-Checked="@_userInput.Remember">Remember me</MudCheckBox>
+    <MudButton ButtonType="ButtonType.Submit">Login</MudButton>
+</EditForm>
+
+
+@code {
+
+    [Inject]
+    HttpClient Http { get; set; }
+
+    private readonly LoginModel _userInput = new();
+
+    private void OnSubmit()
+    {
+        Http.PostAsJsonAsync(CIAPath.Login, _userInput);
+    }
+
+}
