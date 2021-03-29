@@ -9,17 +9,28 @@
     <MudButton ButtonType="ButtonType.Submit">Login</MudButton>
 </EditForm>
 
+@if (_loginFailed)
+{
+    <span>Login Failed</span>
+}
 
 @code {
 
     [Inject]
     HttpClient Http { get; set; }
 
+    private bool _loginFailed;
+
     private readonly LoginModel _userInput = new();
 
-    private void OnSubmit()
+    private async Task OnSubmit()
     {
-        Http.PostAsJsonAsync(CIAPath.Login, _userInput);
+        var result = await Http.PostAsJsonAsync(CIAPath.Login, _userInput);
+
+        if (!result.IsSuccessStatusCode)
+        {
+            _loginFailed = true;
+        }
     }
 
 }

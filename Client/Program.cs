@@ -1,11 +1,10 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CIAHome.Client.Services;
+using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
 using CIAHome.Client.Repositories;
-using CIAHome.Client.Services;
-using CIAHome.Shared.Interfaces;
-using CIAHome.Shared.Model;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
@@ -19,6 +18,8 @@ namespace CIAHome.Client
 			var builder = WebAssemblyHostBuilder.CreateDefault(args);
 			builder.RootComponents.Add<App>("#app");
 
+			builder.Services.AddAuthorizationCore();
+			
 			builder.Services.AddScoped(_ => new HttpClient
 										   {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
 
@@ -32,6 +33,8 @@ namespace CIAHome.Client
 			
 			builder.Services.AddScoped<IThemeProvider, ThemeProvider>();
 			builder.Services.AddScoped<IAsyncRepository<TodoList>, TodoListRepository>();
+			
+			builder.Services.AddScoped<AuthenticationStateProvider, CIAuthenticationStateProvider>();
 			
 			await builder.Build().RunAsync();
 		}

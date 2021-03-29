@@ -26,12 +26,20 @@ namespace CIAHome.Server.Controllers
 			{
 				return BadRequest();
 			}
-			
+
+			if (await _userManager.FindByNameAsync(model.Username) == null)
+			{
+				await _userManager.CreateAsync(new CIAUser
+				{
+					UserName = model.Username
+				}, model.Password);
+			}
+
 			var result = await _signinManager.PasswordSignInAsync(model.Username, model.Password, model.Remember, false);
 
 			if (result.Succeeded)
 			{
-				return Ok();
+				return Redirect(model.ReturnUrl ?? "/");
 			}
 
 			return Unauthorized();

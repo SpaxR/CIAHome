@@ -1,0 +1,14 @@
+﻿<h3>RedirectToLogin</h3>
+
+@code {
+
+    [Inject]
+    NavigationManager Navigation { get; set; }
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        Navigation.NavigateTo($"/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+    }
+
+}
