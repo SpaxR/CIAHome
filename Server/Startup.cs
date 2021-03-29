@@ -24,8 +24,9 @@ namespace CIAHome.Server
 		{
 			services.AddDbContext<CIADbContext>(_ => _.UseInMemoryDatabase("CIADB"));
 
-			services.AddDefaultIdentity<CIAUser>().AddEntityFrameworkStores<CIADbContext>();
-			
+			services.AddIdentity<CIAUser, IdentityRole>()
+					.AddEntityFrameworkStores<CIADbContext>();
+
 			services.Configure<IdentityOptions>(options =>
 			{
 				options.Password.RequireDigit           = false;
@@ -62,7 +63,7 @@ namespace CIAHome.Server
 
 			app.UseAuthentication();
 			app.UseAuthorization();
-			
+
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapRazorPages();

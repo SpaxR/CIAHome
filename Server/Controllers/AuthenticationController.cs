@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using CIAHome.Server.Data;
 using CIAHome.Shared;
 using CIAHome.Shared.Models;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CIAHome.Server.Controllers
 {
 	[ApiController]
+	[Route(CIAPath.Api)]
 	public class AuthenticationController : ControllerBase
 	{
 		private readonly UserManager<CIAUser>   _userManager;
@@ -19,7 +21,7 @@ namespace CIAHome.Server.Controllers
 			_signinManager = signinManager;
 		}
 
-		[HttpPost(CIAPath.Login)]
+		[Route(CIAPath.Login)]
 		public async Task<IActionResult> Login(LoginModel model)
 		{
 			if (!ModelState.IsValid)
@@ -35,7 +37,8 @@ namespace CIAHome.Server.Controllers
 				}, model.Password);
 			}
 
-			var result = await _signinManager.PasswordSignInAsync(model.Username, model.Password, model.Remember, false);
+			var result =
+				await _signinManager.PasswordSignInAsync(model.Username, model.Password, model.Remember, false);
 
 			if (result.Succeeded)
 			{
@@ -43,6 +46,28 @@ namespace CIAHome.Server.Controllers
 			}
 
 			return Unauthorized();
+		}
+
+		[Route(CIAPath.Logout)]
+		public async Task<IActionResult> Logout()
+		{
+			await _signinManager.SignOutAsync();
+			return Ok();
+		}
+
+		[Route(CIAPath.UserProfile)]
+		public IActionResult UserProfile()
+		{
+			if (User != null)
+			{
+				return Ok(new UserProfile
+				{
+					Username = User.Identity?.Name,
+					Claims   = User.Claims.ToDictionary(c => c.Type, c => c.Value)
+				});
+			}
+
+			return Ok();
 		}
 	}
 }

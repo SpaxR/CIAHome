@@ -2,10 +2,9 @@
 {
 	public static class CIAPath
 	{
-		public const string Login       = "/api/login";
-		public const string Logout      = "/api/logout";
-		public const string UserProfile = "/api/user";
-
-
+		public const string Api         = "/api";
+		public const string Login       = Api + "/login";
+		public const string Logout      = Api + "/logout";
+		public const string UserProfile = Api + "/user";
 	}
 }

@@ -1,15 +1,35 @@
 ﻿@page "/"
+@using System.Security.Claims
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
 
-<h3>Current User:</h3>
-<h5>Permissions:</h5>
+<h3>Current User: @_principal.Identity?.Name</h3>
+<h5>IsAuthenticated: @_isAuthenticated</h5>
+<h5>Claims:</h5>
 <ul>
-    
+    @foreach (var claim in _principal.Claims)
+    {
+        <li>@claim.Type => @claim.Value</li>
+    }
 </ul>
 
 @code
 {
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+
+    private ClaimsPrincipal _principal;
+    private bool _isAuthenticated;
+
+    /// <inheritdoc />
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState = await AuthState;
+
+        _principal = authenticationState.User;
+        _isAuthenticated = authenticationState.User.Identity?.IsAuthenticated ?? false;
+    }
+
 }
