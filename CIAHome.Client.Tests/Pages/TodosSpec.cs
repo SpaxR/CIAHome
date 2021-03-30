@@ -31,6 +31,7 @@ namespace CIAHome.Client.Tests.Pages
 		[Fact]
 		public void contains_add_button()
 		{
+			CreateSUT();
 			var button = _sut.FindComponent<MudButton>();
 
 			Assert.NotNull(button);
