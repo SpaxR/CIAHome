@@ -14,3 +14,12 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code
+{
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        Themes.OnChange += StateHasChanged;
+    }
+}

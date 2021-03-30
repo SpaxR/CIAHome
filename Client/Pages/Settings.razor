@@ -1,0 +1,21 @@
+﻿@page "/settings"
+@inject ThemeProvider Themes
+
+<MudSwitch T="bool" Checked="Themes.CurrentTheme == ThemeProvider.DarkTheme" CheckedChanged="ToggleTheme">
+    Dark Theme
+</MudSwitch>
+
+@code {
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        Themes.OnChange += StateHasChanged;
+    }
+
+    private void ToggleTheme(bool isDark)
+    {
+        Themes.ChangeTheme(isDark ? ThemeProvider.DarkTheme : ThemeProvider.LightTheme);
+    }
+
+}

@@ -1,4 +1,5 @@
-﻿using MudBlazor;
+﻿using System;
+using MudBlazor;
 
 namespace CIAHome.Client.Services
 {
@@ -6,6 +7,8 @@ namespace CIAHome.Client.Services
 	{
 		public MudTheme CurrentTheme { get; private set; } = DarkTheme;
 
+		public Action OnChange { get; set; }
+		
 		public static readonly MudTheme LightTheme = new()
 		{
 			Palette = new Palette
@@ -48,6 +51,7 @@ namespace CIAHome.Client.Services
 		public void ChangeTheme(MudTheme theme)
 		{
 			CurrentTheme = theme;
+			OnChange?.Invoke();
 		}
 	}
 }

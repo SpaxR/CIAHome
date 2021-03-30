@@ -5,6 +5,7 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="DrawerToggle"/>
         <MudButton Link="/">CIAHome</MudButton>
         <MudAppBarSpacer/>
+        <MudIconButton Icon="@(Icons.Material.Filled.Settings)" Color="Color.Inherit" Link="/settings"></MudIconButton>
     </MudAppBar>
     
     <MudDrawer @bind-Open="_drawerOpen" Variant="DrawerVariant.Persistent" ClipMode="DrawerClipMode.Docked" Elevation="2">
