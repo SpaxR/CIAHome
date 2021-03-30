@@ -1,14 +1,22 @@
 @inherits LayoutComponentBase
+@inject IThemeProvider Themes
+
+<MudThemeProvider Theme="Themes.CurrentTheme"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
 <MudLayout>
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="DrawerToggle"/>
         <MudButton Link="/">CIAHome</MudButton>
         <MudAppBarSpacer/>
+        <MudIconButton Icon="@(Icons.Material.Filled.Settings)" Color="Color.Inherit" Link="/settings"></MudIconButton>
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+    
+    <MudDrawer @bind-Open="_drawerOpen" Variant="DrawerVariant.Persistent" ClipMode="DrawerClipMode.Docked" Elevation="2">
         <NavMenu/>
     </MudDrawer>
+    
     <MudMainContent>
         @Body
     </MudMainContent>
@@ -18,4 +26,10 @@
     bool _drawerOpen;
 
     void DrawerToggle() => _drawerOpen = !_drawerOpen;
+    
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        Themes.ThemeChanged += (_, _) => StateHasChanged();
+    }
 }
