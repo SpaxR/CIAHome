@@ -1,6 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Bunit;
+using CIAHome.Client.Services;
 using CIAHome.Client.Shared;
+using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using MudBlazor;
 using MudBlazor.Services;
 using Xunit;
@@ -9,12 +14,24 @@ namespace CIAHome.Client.Tests.Shared
 {
 	public class MainLayoutSpec : TestContext
 	{
-		private IRenderedComponent<MainLayout> _sut;
+		private          IRenderedComponent<MainLayout> _sut;
+		private readonly Mock<IThemeProvider>           _themeProviderMock = new();
 
-		private void CreateSUT()
+
+		public MainLayoutSpec()
 		{
 			JSInterop.Mode = JSRuntimeMode.Loose;
+			
 			Services.AddMudServices();
+			Services.AddMudBlazorDialog();
+			Services.AddMudBlazorSnackbar();
+			
+			Services.AddScoped(_ => Mock.Of<INavigationInterception>());
+			Services.AddScoped(_ => _themeProviderMock.Object);
+		}
+		
+		private void CreateSUT()
+		{
 			_sut = RenderComponent<MainLayout>();
 		}
 
@@ -72,6 +89,28 @@ namespace CIAHome.Client.Tests.Shared
 						.FirstOrDefault(b => b.Markup.Contains("CIAHome"));
 
 			Assert.Equal("/", title?.Instance.Link);
+		}
+		
+		[Fact]
+		public void sets_MudThemeProvider_to_current_theme()
+		{
+			var theme = new MudTheme();
+			_themeProviderMock.Setup(tp => tp.CurrentTheme).Returns(theme);
+			CreateSUT();
+
+			var mudThemeProvider = _sut.FindComponent<MudThemeProvider>();
+
+			Assert.Equal(theme, mudThemeProvider.Instance.Theme);
+		}
+
+		[Fact]
+		public void ThemeChanged_triggers_Render()
+		{
+			CreateSUT();
+			
+			_sut.InvokeAsync(() => _themeProviderMock.Raise(tp => tp.ThemeChanged += null, EventArgs.Empty));
+
+			Assert.Equal(2, _sut.RenderCount);
 		}
 	}
 }

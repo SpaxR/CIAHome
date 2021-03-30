@@ -3,11 +3,20 @@ using MudBlazor;
 
 namespace CIAHome.Client.Services
 {
-	public class ThemeProvider
+	public interface IThemeProvider
+	{
+		event EventHandler<EventArgs> ThemeChanged;
+
+		MudTheme CurrentTheme { get; }
+		void     ChangeTheme(MudTheme theme);
+
+	}
+	
+	public class ThemeProvider : IThemeProvider
 	{
 		public MudTheme CurrentTheme { get; private set; } = DarkTheme;
 
-		public Action OnChange { get; set; }
+		public event EventHandler<EventArgs> ThemeChanged;
 		
 		public static readonly MudTheme LightTheme = new()
 		{
@@ -51,7 +60,7 @@ namespace CIAHome.Client.Services
 		public void ChangeTheme(MudTheme theme)
 		{
 			CurrentTheme = theme;
-			OnChange?.Invoke();
+			ThemeChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

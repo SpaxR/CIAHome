@@ -1,4 +1,9 @@
 @inherits LayoutComponentBase
+@inject IThemeProvider Themes
+
+<MudThemeProvider Theme="Themes.CurrentTheme"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
 <MudLayout>
     <MudAppBar Elevation="1">
@@ -21,4 +26,10 @@
     bool _drawerOpen;
 
     void DrawerToggle() => _drawerOpen = !_drawerOpen;
+    
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        Themes.ThemeChanged += (_, _) => StateHasChanged();
+    }
 }

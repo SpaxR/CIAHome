@@ -22,7 +22,7 @@ namespace CIAHome.Client
 			builder.Services.AddMudBlazorDialog();
 			builder.Services.AddMudBlazorSnackbar();
 
-			builder.Services.AddScoped<ThemeProvider>();
+			builder.Services.AddScoped<IThemeProvider, ThemeProvider>();
 
 			await builder.Build().RunAsync();
 		}
