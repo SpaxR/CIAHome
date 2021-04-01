@@ -1,5 +1,6 @@
 ﻿@page "/todos"
 @using CIAHome.Shared.Model
+@using CIAHome.Shared.Interfaces
 
 @foreach (var list in _lists)
 {
@@ -16,7 +17,10 @@
 @code {
 
     [Inject]
-    ITodoService TodoService { get; set; }
+    IAsyncRepository<Todo> TodoRepository { get; set; }
+
+    [Inject]
+    IAsyncRepository<TodoList> TodoListRepository { get; set; }
 
     private IEnumerable<TodoList> _lists;
     private IEnumerable<Todo> _uncategorized;
@@ -24,8 +28,8 @@
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
-        _lists = await TodoService.TodoListsAsync();
-        _uncategorized = await TodoService.TodosAsync(null);
+        _uncategorized = await TodoRepository.All();
+        _lists = await TodoListRepository.All();
         StateHasChanged();
     }
 
