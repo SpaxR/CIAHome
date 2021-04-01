@@ -1,0 +1,21 @@
+﻿@using System.Windows.Input
+<MudCard>
+    
+    @(List?.Text ?? "Todo List")
+    
+    <MudIconButton Icon="@(Icons.Sharp.Delete)" OnClick="OnDelete"></MudIconButton>
+    
+</MudCard>
+
+
+@code {
+
+    [Parameter]
+    public TodoList List { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnDelete { get; set; }
+    
+    [Parameter] public ICommand Command { get; set; }
+    
+}

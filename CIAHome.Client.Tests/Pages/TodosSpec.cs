@@ -1,19 +1,30 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Bunit;
-using CIAHome.Client.Components;
 using CIAHome.Client.Pages;
+using CIAHome.Client.Tests.PageModel;
 using CIAHome.Shared.Interfaces;
 using CIAHome.Shared.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using MudBlazor;
 using Xunit;
 
 namespace CIAHome.Client.Tests.Pages
 {
 	public sealed class TodosSpec : TestContext
 	{
-		private          IRenderedComponent<Todos>        _sut;
+		private TodoPage _sut;
+
+		private TodoPage SUT
+		{
+			get
+			{
+				_sut ??= new TodoPage(RenderComponent<Todos>());
+				return _sut;
+			}
+		}
+
+
 		private readonly Mock<IAsyncRepository<Todo>>     _todoRepositoryMock = new();
 		private readonly Mock<IAsyncRepository<TodoList>> _listRepositoryMock = new();
 
@@ -24,30 +35,19 @@ namespace CIAHome.Client.Tests.Pages
 			Services.AddScoped(_ => _listRepositoryMock.Object);
 		}
 
-		private void CreateSUT()
+		[Fact]
+		public void contains_add_todo_button()
 		{
-			_sut = RenderComponent<Todos>();
+			Assert.NotNull(SUT.AddTodoButton);
 		}
 
 		[Fact]
-		public void contains_add_button()
-		{
-			CreateSUT();
-			var button = _sut.FindComponent<MudButton>();
-
-			Assert.NotNull(button);
-		}
-
-		[Fact]
-		public void contains_TodoListItem_foreach_TodoList()
+		public void contains_TodoListCard_foreach_TodoList()
 		{
 			var lists = new List<TodoList> {new(), new(), new(),};
 			_listRepositoryMock.Setup(s => s.All()).ReturnsAsync(lists);
-			CreateSUT();
 
-			var result = _sut.FindComponents<TodoListItem>();
-
-			Assert.Equal(lists.Count, result.Count);
+			Assert.Equal(lists.Count, SUT.ListCards.Count());
 		}
 
 		[Fact]
@@ -55,11 +55,8 @@ namespace CIAHome.Client.Tests.Pages
 		{
 			var todos = new List<Todo> {new(), new(), new(),};
 			_todoRepositoryMock.Setup(s => s.All()).ReturnsAsync(todos);
-			CreateSUT();
 
-			var result = _sut.FindComponents<TodoItem>();
-
-			Assert.Equal(todos.Count, result.Count);
+			Assert.Equal(todos.Count, SUT.TodoItems.Count());
 		}
 	}
 }

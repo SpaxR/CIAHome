@@ -1,37 +1,45 @@
 ﻿@page "/todos"
-@using CIAHome.Shared.Model
-@using CIAHome.Shared.Interfaces
+@inject IAsyncRepository<Todo> TodoRepository
+@inject IAsyncRepository<TodoList> TodoListRepository
 
 @foreach (var list in _lists)
 {
-    <TodoListItem></TodoListItem>
+    <TodoListCard List="@list" OnDelete="@(() => DeleteList(list))"></TodoListCard>
 }
+<MudButton OnClick="AddList">Add List</MudButton>
+
+<MudDivider/>
 
 @foreach (var todo in _uncategorized)
 {
     <TodoItem></TodoItem>
 }
+<MudButton>Add Todo</MudButton>
 
-<MudButton></MudButton>
 
 @code {
 
-    [Inject]
-    IAsyncRepository<Todo> TodoRepository { get; set; }
-
-    [Inject]
-    IAsyncRepository<TodoList> TodoListRepository { get; set; }
-
-    private IEnumerable<TodoList> _lists;
-    private IEnumerable<Todo> _uncategorized;
+    private IEnumerable<TodoList> _lists = Enumerable.Empty<TodoList>();
+    private IEnumerable<Todo> _uncategorized = Enumerable.Empty<Todo>();
 
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
         _uncategorized = await TodoRepository.All();
         _lists = await TodoListRepository.All();
-        StateHasChanged();
     }
 
+    private async Task AddList()
+    {
+        await TodoListRepository.Create();
+        _lists = await TodoListRepository.All();
+    }
 
+    private async Task DeleteList(TodoList list)
+    {
+        Console.WriteLine("Deleting list:" + list.Id);
+        await TodoListRepository.Delete(list);
+        _lists = await TodoListRepository.All();
+    }
+    
 }
