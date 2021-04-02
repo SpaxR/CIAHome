@@ -72,7 +72,8 @@ namespace CIAHome.Client.Repositories
 
 		private async Task UpdateIDs(Func<IEnumerable<string>, IEnumerable<string>> update)
 		{
-			var ids = await _storage.GetItemAsync<IEnumerable<string>>(nameof(Todo));
+			var ids = await _storage.GetItemAsync<IEnumerable<string>>(nameof(Todo))
+					  ?? Enumerable.Empty<string>();
 
 			await _storage.SetItemAsync(nameof(Todo), update(ids).ToArray());
 		}

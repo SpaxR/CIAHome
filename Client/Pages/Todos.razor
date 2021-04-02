@@ -19,11 +19,16 @@
 
 <MudDivider/>
 
-@foreach (var todo in _uncategorized)
+@if (_uncategorized.Any())
 {
-    <TodoItem></TodoItem>
+    <MudList>
+        @foreach (var todo in _uncategorized)
+        {
+            <TodoItem Todo="@todo" OnDelete="@(() => DeleteTodo(todo))"></TodoItem>
+        }
+    </MudList>
 }
-<MudButton>Add Todo</MudButton>
+<MudButton OnClick="AddTodo">Add Todo</MudButton>
 
 
 @code {
@@ -48,6 +53,18 @@
     {
         await TodoListRepository.Delete(list);
         _lists = await TodoListRepository.All();
+    }
+
+    private async Task AddTodo()
+    {
+        await TodoRepository.Create();
+        _uncategorized = await TodoRepository.All();
+    }
+
+    private async Task DeleteTodo(Todo todo)
+    {
+        await TodoRepository.Delete(todo);
+        _uncategorized = await TodoRepository.All();
     }
 
 }

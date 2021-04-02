@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Bunit;
 using CIAHome.Client.Components.Cards;
 using CIAHome.Client.Components.ListItems;
@@ -10,8 +12,8 @@ namespace CIAHome.Client.Tests.PageModel
 {
 	public class TodoPage : ComponentBase<Todos>
 	{
-		public IRenderedComponent<MudButton> AddTodoButton     { get; }
-		public IRenderedComponent<MudButton> AddTodoList { get; }
+		public IRenderedComponent<MudButton> AddTodoBtn     { get; }
+		public IRenderedComponent<MudButton> AddTodoListBtn { get; }
 
 		public IEnumerable<TodoListCardComponent> ListCards
 			=> Root.FindComponents<TodoListCard>().Select(card => new TodoListCardComponent(card));
@@ -23,8 +25,8 @@ namespace CIAHome.Client.Tests.PageModel
 		{
 			var buttons = root.FindComponents<MudButton>();
 
-			AddTodoButton     = buttons.FirstOrDefault(btn => btn.Markup.Contains("Add Todo"));
-			AddTodoList = buttons.FirstOrDefault(btn => btn.Markup.Contains("Add List"));
+			AddTodoBtn     = buttons.FirstOrDefault(btn => btn.Markup.Contains("Add Todo"));
+			AddTodoListBtn = buttons.FirstOrDefault(btn => btn.Markup.Contains("Add List"));
 		}
 	}
 }

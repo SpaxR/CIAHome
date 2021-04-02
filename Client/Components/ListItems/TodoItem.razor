@@ -1,5 +1,9 @@
 ﻿<h3>TodoItem</h3>
 
 @code {
+    [Parameter]
+    public Todo Todo { get; set; }
     
+    [Parameter]
+    public EventCallback OnDelete { get; set; }
 }

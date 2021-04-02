@@ -1,5 +1,4 @@
-﻿@using System.Windows.Input
-<MudCard>
+﻿<MudCard>
     <MudCardHeader>
         <CardHeaderContent>
             <MudText>@(List?.Text ?? "Todo List")</MudText>
@@ -18,8 +17,5 @@
 
     [Parameter]
     public EventCallback<MouseEventArgs> OnDelete { get; set; }
-
-    [Parameter]
-    public ICommand Command { get; set; }
 
 }
