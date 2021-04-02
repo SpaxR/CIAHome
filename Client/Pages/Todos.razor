@@ -2,10 +2,19 @@
 @inject IAsyncRepository<Todo> TodoRepository
 @inject IAsyncRepository<TodoList> TodoListRepository
 
-@foreach (var list in _lists)
+
+@if (_lists.Any())
 {
-    <TodoListCard List="@list" OnDelete="@(() => DeleteList(list))"></TodoListCard>
+    <MudGrid Justify="Justify.SpaceEvenly">
+        @foreach (var list in _lists)
+        {
+            <MudItem>
+                <TodoListCard List="@list" OnDelete="@(() => DeleteList(list))"></TodoListCard>
+            </MudItem>
+        }
+    </MudGrid>
 }
+
 <MudButton OnClick="AddList">Add List</MudButton>
 
 <MudDivider/>
@@ -37,9 +46,8 @@
 
     private async Task DeleteList(TodoList list)
     {
-        Console.WriteLine("Deleting list:" + list.Id);
         await TodoListRepository.Delete(list);
         _lists = await TodoListRepository.All();
     }
-    
+
 }

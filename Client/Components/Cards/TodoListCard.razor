@@ -1,10 +1,13 @@
 ﻿@using System.Windows.Input
 <MudCard>
-    
-    @(List?.Text ?? "Todo List")
-    
-    <MudIconButton Icon="@(Icons.Sharp.Delete)" OnClick="OnDelete"></MudIconButton>
-    
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText>@(List?.Text ?? "Todo List")</MudText>
+        </CardHeaderContent>
+        <CardHeaderActions>
+            <MudIconButton Icon="@(Icons.Sharp.Delete)" OnClick="OnDelete"></MudIconButton>
+        </CardHeaderActions>
+    </MudCardHeader>
 </MudCard>
 
 
@@ -15,7 +18,8 @@
 
     [Parameter]
     public EventCallback<MouseEventArgs> OnDelete { get; set; }
-    
-    [Parameter] public ICommand Command { get; set; }
-    
+
+    [Parameter]
+    public ICommand Command { get; set; }
+
 }
