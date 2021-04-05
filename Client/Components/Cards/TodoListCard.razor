@@ -1,10 +1,17 @@
 ﻿<MudCard>
     <MudCardHeader>
         <CardHeaderContent>
-            <MudText>@(List?.Text ?? "Todo List")</MudText>
+            @if (List == null)
+            {
+                <MudSkeleton/>
+            }
+            else
+            {
+                <MudText>@List.Text</MudText>
+            }
         </CardHeaderContent>
         <CardHeaderActions>
-            <MudIconButton Icon="@(Icons.Sharp.Delete)" OnClick="OnDelete"></MudIconButton>
+            <MudIconButton Icon="@(Icons.Filled.Delete)" OnClick="OnDelete"></MudIconButton>
         </CardHeaderActions>
     </MudCardHeader>
 </MudCard>
