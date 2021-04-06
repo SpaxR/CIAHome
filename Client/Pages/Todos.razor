@@ -1,7 +1,8 @@
 ﻿@page "/todos"
+@page "/todos/{id}"
 @inject IAsyncRepository<Todo> TodoRepository
 @inject IAsyncRepository<TodoList> TodoListRepository
-
+@inject NavigationManager Navigation
 
 @if (_lists.Any())
 {
@@ -33,13 +34,23 @@
 
 @code {
 
+    [Parameter]
+    public string Id { get; set; }
+
     private IEnumerable<TodoList> _lists = Enumerable.Empty<TodoList>();
     private IEnumerable<Todo> _uncategorized = Enumerable.Empty<Todo>();
 
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
-        _uncategorized = await TodoRepository.All();
+        if (!string.IsNullOrEmpty(Id))
+        {
+            _uncategorized = (await TodoListRepository.Find(list => list.Id.Equals(Id))).Todos;
+        }
+        else
+        {
+            _uncategorized = await TodoRepository.All();
+        }
         _lists = await TodoListRepository.All();
     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bunit;
+using CIAHome.Client.Components.ListItems;
 using CIAHome.Client.Pages;
 using CIAHome.Client.Tests.PageModel;
 using CIAHome.Shared.Interfaces;
@@ -152,6 +153,24 @@ namespace CIAHome.Client.Tests
 			SUT.TodoItems.Single().InvokeDelete();
 
 			Assert.Empty(SUT.TodoItems);
+		}
+
+		[Fact]
+		public void WithId_loads_Todos_of_List_in_detail_View()
+		{
+			var list = new TodoList();
+			list.Todos.Add(new Todo());
+			list.Todos.Add(new Todo());
+
+			_listRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<TodoList, bool>>()))
+							   .ReturnsAsync(list);
+			
+			var sut = RenderComponent<Todos>((nameof(Todos.Id), list.Id));
+
+			foreach (var todo in list.Todos)
+			{
+				Assert.NotNull(sut.FindComponent<TodoItem>(item => item.Instance.Todo == todo));
+			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿<MudCard>
+﻿<MudCard @onclick="OnClick">
     <MudCardHeader>
         <CardHeaderContent>
             <MudText>@List.Text</MudText>
@@ -15,6 +15,9 @@
     [Parameter]
     public TodoList List { get; set; }
 
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+    
     [Parameter]
     public EventCallback<MouseEventArgs> OnDelete { get; set; }
 

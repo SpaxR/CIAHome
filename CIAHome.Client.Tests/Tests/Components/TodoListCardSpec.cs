@@ -71,5 +71,14 @@ namespace CIAHome.Client.Tests
 
 			Assert.Equal(nameof(TodoListCard.List), exception.ParamName);
 		}
+
+		[Fact]
+		public void click_anywhere_calls_OnClick()
+		{
+			Assert.Raises<MouseEventArgs>(
+				handler => SUT.SetParametersAndRender((nameof(TodoListCard.OnClick), handler.AsCallback())),
+				_ => SUT.Instance.OnClick = EventCallback<MouseEventArgs>.Empty,
+				() => SUT.Find(".mud-card").Click());
+		}
 	}
 }
