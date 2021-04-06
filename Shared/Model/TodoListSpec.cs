@@ -36,12 +36,17 @@ namespace CIAHome.Shared.Model
 			
 			Assert.True(result);
 		}
-
-
+		
 		[Fact]
 		public void Text_is_not_null_or_whitespace()
 		{
 			Assert.NotEmpty(_sut.Text);
+		}
+
+		[Fact]
+		public void Todos_is_not_null()
+		{
+			Assert.NotNull(_sut.Todos);
 		}
 		
 	}
