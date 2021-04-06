@@ -7,11 +7,12 @@
 }
 else
 {
-    <MudText>@Todo.Text</MudText>
-    <MudIconButton Icon="@(Icons.Sharp.Create)" OnClick="@(() => _isEditing = true)"/>
+    <MudText Style="@(Todo.Checked ? "text-decoration:line-through" : "")" @onclick="ToggleChecked">
+        @Todo.Text
+    </MudText>
+    <MudIconButton Icon="@(Icons.Sharp.Create)" OnClick="@(_ => _isEditing = true)"/>
+    <MudIconButton Icon="@(Icons.Sharp.Delete)" OnClick="OnDelete"/>
 }
-
-<MudIconButton Icon="@(Icons.Sharp.Delete)" OnClick="OnDelete"/>
 
 @code {
 
@@ -27,6 +28,12 @@ else
     protected override void OnParametersSet()
     {
         if (Todo == null) throw new ArgumentNullException(nameof(Todo));
+    }
+
+    private async Task ToggleChecked()
+    {
+        Todo.Checked = !Todo.Checked;
+        await TodoRepository.Update(Todo);
     }
 
 }

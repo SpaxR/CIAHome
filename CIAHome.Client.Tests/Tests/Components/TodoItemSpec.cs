@@ -33,6 +33,13 @@ namespace CIAHome.Client.Tests
 			Services.AddScoped(_ => _todoRepository.Object);
 		}
 
+		private void Enable_Editing()
+		{
+			SUT.FindComponent<MudIconButton>(b => b.Instance.Icon == Icons.Sharp.Create)
+			   .Find("button")
+			   .Click();
+		}
+
 		[Fact]
 		public void shows_text_of_Todo()
 		{
@@ -61,7 +68,7 @@ namespace CIAHome.Client.Tests
 		[Fact]
 		public void clicking_edit_IconButton_changes_Text_to_Input()
 		{
-			SUT.FindComponent<MudIconButton>().Find("button").Click();
+			Enable_Editing();
 
 			Assert.NotNull(SUT.FindComponent<MudInput<string>>());
 		}
@@ -69,9 +76,7 @@ namespace CIAHome.Client.Tests
 		[Fact]
 		public void editing_Text_changes_Text_of_Todo()
 		{
-			SUT.FindComponent<MudIconButton>(b => b.Instance.Icon == Icons.Sharp.Create)
-			   .Find("button")
-			   .Click();
+			Enable_Editing();
 			var input = SUT.FindComponent<MudInput<string>>();
 
 			input.Find("input").Change("SOME TEXT");
@@ -82,9 +87,7 @@ namespace CIAHome.Client.Tests
 		[Fact]
 		public void editing_Text_updates_Todo_in_Repository()
 		{
-			SUT.FindComponent<MudIconButton>(b => b.Instance.Icon == Icons.Sharp.Create)
-			   .Find("button")
-			   .Click();
+			Enable_Editing();
 			var input = SUT.FindComponent<MudInput<string>>();
 
 			input.Find("input").Change("SOME TEXT");
@@ -95,29 +98,35 @@ namespace CIAHome.Client.Tests
 		[Fact]
 		public void editing_Text_shows_Confirm_IconButton()
 		{
-			SUT.FindComponent<MudIconButton>(b => b.Instance.Icon == Icons.Sharp.Create)
-			   .Find("button")
-			   .Click();
+			Enable_Editing();
 
 			var button = SUT.FindComponent<MudIconButton>(b => b.Instance.Icon == Icons.Sharp.Check);
-			
+
 			Assert.NotNull(button);
+		}
+
+		[Fact]
+		public void editing_Text_does_not_show_delete_IconButton()
+		{
+			Enable_Editing();
+
+			var button = SUT.FindComponent<MudIconButton>(b => b.Instance.Icon == Icons.Sharp.Delete);
+
+			Assert.Null(button);
 		}
 
 		[Fact]
 		public void clicking_confirm_IconButton_changes_Input_to_Text()
 		{
-			SUT.FindComponent<MudIconButton>(b => b.Instance.Icon == Icons.Sharp.Create)
-			   .Find("button")
-			   .Click();
-			
+			Enable_Editing();
+
 			SUT.FindComponent<MudIconButton>(b => b.Instance.Icon == Icons.Sharp.Check)
 			   .Find("button")
 			   .Click();
-			
+
 			Assert.NotNull(SUT.FindComponent<MudText>());
 		}
-		
+
 		[Fact]
 		public void contains_button_for_deletion()
 		{
@@ -136,6 +145,42 @@ namespace CIAHome.Client.Tests
 				handler => SUT.SetParametersAndRender((nameof(TodoItem.OnDelete), handler.AsCallback())),
 				_ => SUT.Instance.OnDelete = EventCallback<MouseEventArgs>.Empty,
 				() => button.Find("button").Click());
+		}
+
+		[Fact]
+		public void text_is_strikethrough_if_todo_is_checked()
+		{
+			_todo.Checked = true;
+
+			var text = SUT.FindComponent<MudText>();
+
+			Assert.Contains("text-decoration:line-through", text.Instance.Style.Trim());
+		}
+
+		[Fact]
+		public void text_is_not_strikethrough_if_todo_is_unchecked()
+		{
+			_todo.Checked = false;
+
+			var text = SUT.FindComponent<MudText>();
+
+			Assert.DoesNotContain("line-through", text.Instance.Style.Trim());
+		}
+
+		[Fact]
+		public void clicking_text_toggles_Checked_to_true()
+		{
+			SUT.Find("p").Click();
+
+			Assert.True(_todo.Checked);
+		}
+
+		[Fact]
+		public void toggling_Checked_updates_Todo_in_Repository()
+		{
+			SUT.Find("p").Click();
+
+			_todoRepository.Verify(repo => repo.Update(_todo));
 		}
 	}
 }
