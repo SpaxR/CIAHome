@@ -31,10 +31,32 @@ namespace CIAHome.Client.Tests
 		}
 
 		[Fact]
-		public void MissingList_shows_MudSkeleton()
+		public void shows_amount_of_Todos_in_list()
 		{
-			SUT.FindComponent<MudSkeleton>();
+			var list = new TodoList();
+			list.Todos.Add(new Todo());
+			list.Todos.Add(new Todo());
+			SUT.SetParametersAndRender((nameof(TodoListCard.List), list));
+
+			Assert.Contains("2 Todos", SUT.Markup);
 		}
+
+		[Fact]
+		public void shows_empty_todos_as_No_Todos()
+		{
+			SUT.SetParametersAndRender((nameof(TodoListCard.List), new TodoList()));
+
+			Assert.Contains("No Todos", SUT.Markup);
+		}
+
+		[Fact]
+		public void MissingList_shows_MudSkeleton_for_Text_and_TodoCount()
+		{
+			var skeletons = SUT.FindComponents<MudSkeleton>();
+
+			Assert.Equal(2, skeletons.Count);
+		}
+
 
 		[Fact]
 		public void contains_delete_IconButton()

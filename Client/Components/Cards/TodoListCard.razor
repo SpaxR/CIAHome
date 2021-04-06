@@ -4,10 +4,12 @@
             @if (List == null)
             {
                 <MudSkeleton/>
+                <MudSkeleton/>
             }
             else
             {
                 <MudText>@List.Text</MudText>
+                <MudText>@(List.Todos.Any() ? List.Todos.Count : "No") Todos</MudText>
             }
         </CardHeaderContent>
         <CardHeaderActions>
