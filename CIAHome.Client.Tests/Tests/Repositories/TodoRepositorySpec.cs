@@ -77,7 +77,7 @@ namespace CIAHome.Client.Tests
 
 			Assert.Null(result);
 		}
-		
+
 		[Fact]
 		public async Task All_returns_all_todos()
 		{
@@ -124,8 +124,8 @@ namespace CIAHome.Client.Tests
 		public async Task Update_does_not_duplicate_id_in_Storage_List()
 		{
 			var todo = new Todo();
+			SetupTodos(todo);
 
-			await _sut.Update(todo);
 			await _sut.Update(todo);
 
 			_storageMock.Verify(storage => storage.SetItemAsync(nameof(Todo), new[] {todo.Id}));

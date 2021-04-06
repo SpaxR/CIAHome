@@ -60,7 +60,7 @@ namespace CIAHome.Client.Repositories
 		public async Task Update(Todo todo)
 		{
 			await _storage.SetItemAsync(todo.Id, todo);
-			await UpdateIDs(ids => ids.Append(todo.Id));
+			await UpdateIDs(ids => ids.Append(todo.Id).Distinct());
 		}
 
 		/// <inheritdoc />
@@ -72,8 +72,7 @@ namespace CIAHome.Client.Repositories
 
 		private async Task UpdateIDs(Func<IEnumerable<string>, IEnumerable<string>> update)
 		{
-			var ids = await _storage.GetItemAsync<IEnumerable<string>>(nameof(Todo))
-					  ?? Enumerable.Empty<string>();
+			string[] ids = await _storage.GetItemAsync<string[]>(nameof(Todo)) ?? Array.Empty<string>();
 
 			await _storage.SetItemAsync(nameof(Todo), update(ids).ToArray());
 		}
