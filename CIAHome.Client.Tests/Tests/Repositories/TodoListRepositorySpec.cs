@@ -7,7 +7,7 @@ using CIAHome.Shared.Model;
 using Moq;
 using Xunit;
 
-namespace CIAHome.Client.Tests.Repositories
+namespace CIAHome.Client.Tests
 {
 	public class TodoListRepositorySpec
 	{

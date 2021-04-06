@@ -3,7 +3,7 @@ using CIAHome.Client.Services;
 using MudBlazor;
 using Xunit;
 
-namespace CIAHome.Client.Tests.Services
+namespace CIAHome.Client.Tests
 {
 	public class ThemeProviderSpec
 	{

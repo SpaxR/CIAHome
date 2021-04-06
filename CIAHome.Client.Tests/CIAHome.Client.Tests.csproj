@@ -17,4 +17,12 @@
 	  <ProjectReference Include="..\Shared\CIAHome.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Tests" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="CIAHome.Client.Tests.csproj.DotSettings" />
+	</ItemGroup>
+
 </Project>

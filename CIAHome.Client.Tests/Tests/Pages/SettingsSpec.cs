@@ -7,7 +7,7 @@ using Moq;
 using MudBlazor;
 using Xunit;
 
-namespace CIAHome.Client.Tests.Pages
+namespace CIAHome.Client.Tests
 {
 	public sealed class SettingsSpec : TestContext
 	{

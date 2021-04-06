@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Xunit;
 
-namespace CIAHome.Client.Tests.Pages
+namespace CIAHome.Client.Tests
 {
 	public sealed class TodosSpec : TestContext
 	{

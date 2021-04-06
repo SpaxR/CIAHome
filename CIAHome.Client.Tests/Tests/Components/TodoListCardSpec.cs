@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using Xunit;
 
-namespace CIAHome.Client.Tests.Components
+namespace CIAHome.Client.Tests
 {
 	public class TodoListCardSpec : TestContext
 	{

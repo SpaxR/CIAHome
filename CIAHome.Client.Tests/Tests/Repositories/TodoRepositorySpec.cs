@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
@@ -8,7 +7,7 @@ using CIAHome.Shared.Model;
 using Moq;
 using Xunit;
 
-namespace CIAHome.Client.Tests.Repositories
+namespace CIAHome.Client.Tests
 {
 	public class TodoRepositorySpec
 	{

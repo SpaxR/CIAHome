@@ -3,7 +3,7 @@ using CIAHome.Client.Shared;
 using MudBlazor;
 using Xunit;
 
-namespace CIAHome.Client.Tests.Shared
+namespace CIAHome.Client.Tests
 {
 	public class NavMenuSpec : TestContext
 	{

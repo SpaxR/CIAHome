@@ -10,7 +10,7 @@ using MudBlazor;
 using MudBlazor.Services;
 using Xunit;
 
-namespace CIAHome.Client.Tests.Shared
+namespace CIAHome.Client.Tests
 {
 	public class MainLayoutSpec : TestContext
 	{
