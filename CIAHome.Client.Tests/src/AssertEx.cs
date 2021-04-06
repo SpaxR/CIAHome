@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Bunit;
 using Microsoft.AspNetCore.Components;
 
 namespace CIAHome.Client.Tests
@@ -11,6 +13,13 @@ namespace CIAHome.Client.Tests
 								.Create<T>(
 									handler,
 									args => handler.Invoke(null, args));
+		}
+
+		public static IRenderedComponent<TR> FindComponent<TR>(this IRenderedComponent<IComponent>        component,
+																  Func<IRenderedComponent<TR>, bool> predicate)
+			where TR : IComponent
+		{
+			return component.FindComponents<TR>().FirstOrDefault(predicate);
 		}
 	}
 }

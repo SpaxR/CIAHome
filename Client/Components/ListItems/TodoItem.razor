@@ -1,9 +1,32 @@
-﻿<h3>TodoItem</h3>
+﻿@inject IAsyncRepository<Todo> TodoRepository
+
+@if (_isEditing)
+{
+    <MudInput @bind-Value="Todo.Text" TextChanged="() => TodoRepository.Update(Todo)"/>
+    <MudIconButton Icon="@(Icons.Sharp.Check)" OnClick="@(() => _isEditing = false)"/>
+}
+else
+{
+    <MudText>@Todo.Text</MudText>
+    <MudIconButton Icon="@(Icons.Sharp.Create)" OnClick="@(() => _isEditing = true)"/>
+}
+
+<MudIconButton Icon="@(Icons.Sharp.Delete)" OnClick="OnDelete"/>
 
 @code {
+
     [Parameter]
     public Todo Todo { get; set; }
-    
+
     [Parameter]
-    public EventCallback OnDelete { get; set; }
+    public EventCallback<MouseEventArgs> OnDelete { get; set; }
+
+    private bool _isEditing;
+
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        if (Todo == null) throw new ArgumentNullException(nameof(Todo));
+    }
+
 }
