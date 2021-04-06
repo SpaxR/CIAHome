@@ -1,23 +1,14 @@
 ﻿<MudCard>
     <MudCardHeader>
         <CardHeaderContent>
-            @if (List == null)
-            {
-                <MudSkeleton/>
-                <MudSkeleton/>
-            }
-            else
-            {
-                <MudText>@List.Text</MudText>
-                <MudText>@(List.Todos.Any() ? List.Todos.Count : "No") Todos</MudText>
-            }
+            <MudText>@List.Text</MudText>
+            <MudText>@(List.Todos.Any() ? List.Todos.Count : "No") Todos</MudText>
         </CardHeaderContent>
         <CardHeaderActions>
             <MudIconButton Icon="@(Icons.Filled.Delete)" OnClick="OnDelete"></MudIconButton>
         </CardHeaderActions>
     </MudCardHeader>
 </MudCard>
-
 
 @code {
 
@@ -27,4 +18,10 @@
     [Parameter]
     public EventCallback<MouseEventArgs> OnDelete { get; set; }
 
+    /// <inheritdoc />
+    protected override Task OnParametersSetAsync()
+    {
+        if (List == null) throw new ArgumentNullException(nameof(List));
+        return base.OnParametersSetAsync();
+    }
 }

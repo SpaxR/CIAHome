@@ -1,4 +1,5 @@
-﻿using Bunit;
+﻿using System;
+using Bunit;
 using CIAHome.Client.Components.Cards;
 using CIAHome.Shared.Model;
 using Microsoft.AspNetCore.Components;
@@ -10,13 +11,14 @@ namespace CIAHome.Client.Tests
 {
 	public class TodoListCardSpec : TestContext
 	{
-		private IRenderedComponent<TodoListCard> _sut;
+		private          IRenderedComponent<TodoListCard> _sut;
+		private readonly TodoList                         _list = new();
 
 		private IRenderedComponent<TodoListCard> SUT
 		{
 			get
 			{
-				_sut ??= RenderComponent<TodoListCard>();
+				_sut ??= RenderComponent<TodoListCard>((nameof(TodoListCard.List), _list));
 				return _sut;
 			}
 		}
@@ -24,19 +26,14 @@ namespace CIAHome.Client.Tests
 		[Fact]
 		public void shows_text_of_list()
 		{
-			var list = new TodoList();
-			SUT.SetParametersAndRender((nameof(TodoListCard.List), list));
-
-			Assert.Contains(list.Text, SUT.Markup);
+			Assert.Contains(_list.Text, SUT.Markup);
 		}
 
 		[Fact]
 		public void shows_amount_of_Todos_in_list()
 		{
-			var list = new TodoList();
-			list.Todos.Add(new Todo());
-			list.Todos.Add(new Todo());
-			SUT.SetParametersAndRender((nameof(TodoListCard.List), list));
+			_list.Todos.Add(new Todo());
+			_list.Todos.Add(new Todo());
 
 			Assert.Contains("2 Todos", SUT.Markup);
 		}
@@ -44,19 +41,8 @@ namespace CIAHome.Client.Tests
 		[Fact]
 		public void shows_empty_todos_as_No_Todos()
 		{
-			SUT.SetParametersAndRender((nameof(TodoListCard.List), new TodoList()));
-
 			Assert.Contains("No Todos", SUT.Markup);
 		}
-
-		[Fact]
-		public void MissingList_shows_MudSkeleton_for_Text_and_TodoCount()
-		{
-			var skeletons = SUT.FindComponents<MudSkeleton>();
-
-			Assert.Equal(2, skeletons.Count);
-		}
-
 
 		[Fact]
 		public void contains_delete_IconButton()
@@ -75,6 +61,15 @@ namespace CIAHome.Client.Tests
 				handler => SUT.SetParametersAndRender((nameof(TodoListCard.OnDelete), handler.AsCallback())),
 				_ => SUT.Instance.OnDelete = EventCallback<MouseEventArgs>.Empty,
 				() => button.Find("button").Click());
+		}
+
+		[Fact]
+		public void missing_TodoList_throws_ArgumentNullException()
+		{
+			var exception = Assert.Throws<ArgumentNullException>(
+				() => RenderComponent<TodoListCard>((nameof(TodoListCard.List), null)));
+
+			Assert.Equal(nameof(TodoListCard.List), exception.ParamName);
 		}
 	}
 }
