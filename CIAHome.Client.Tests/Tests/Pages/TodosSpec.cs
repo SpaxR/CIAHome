@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bunit;
-using CIAHome.Client.Components.ListItems;
-using CIAHome.Client.Pages;
+using CIAHome.Client.Components.Todo;
+using CIAHome.Client.Pages.Todo;
 using CIAHome.Client.Tests.PageModel;
 using CIAHome.Shared.Interfaces;
 using CIAHome.Shared.Model;
@@ -21,7 +21,7 @@ namespace CIAHome.Client.Tests
 		{
 			get
 			{
-				_sut ??= new TodoPage(RenderComponent<Todos>());
+				_sut ??= new TodoPage(RenderComponent<TodoMaster>());
 				return _sut;
 			}
 		}
@@ -165,7 +165,7 @@ namespace CIAHome.Client.Tests
 			_listRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<TodoList, bool>>()))
 							   .ReturnsAsync(list);
 			
-			var sut = RenderComponent<Todos>((nameof(Todos.Id), list.Id));
+			var sut = RenderComponent<TodoMaster>((nameof(TodoMaster.Id), list.Id));
 
 			foreach (var todo in list.Todos)
 			{

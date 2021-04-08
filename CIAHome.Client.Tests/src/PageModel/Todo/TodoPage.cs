@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Bunit;
-using CIAHome.Client.Components.Cards;
-using CIAHome.Client.Components.ListItems;
-using CIAHome.Client.Pages;
+using CIAHome.Client.Components.Todo;
+using CIAHome.Client.Pages.Todo;
 using MudBlazor;
 
 namespace CIAHome.Client.Tests.PageModel
 {
-	public class TodoPage : ComponentBase<Todos>
+	public class TodoPage : ComponentBase<TodoMaster>
 	{
 		public IRenderedComponent<MudButton> AddTodoBtn     { get; }
 		public IRenderedComponent<MudButton> AddTodoListBtn { get; }
@@ -21,7 +18,7 @@ namespace CIAHome.Client.Tests.PageModel
 		public IEnumerable<TodoItemComponent> TodoItems
 			=> Root.FindComponents<TodoItem>().Select(item => new TodoItemComponent(item));
 		
-		public TodoPage(IRenderedComponent<Todos> root) : base(root)
+		public TodoPage(IRenderedComponent<TodoMaster> root) : base(root)
 		{
 			var buttons = root.FindComponents<MudButton>();
 
