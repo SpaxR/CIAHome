@@ -1,18 +1,22 @@
 ﻿@inject IAsyncRepository<Todo> TodoRepository
 
-@if (_isEditing)
-{
-    <MudInput @bind-Value="Todo.Text" TextChanged="() => TodoRepository.Update(Todo)"/>
-    <MudIconButton Icon="@(Icons.Sharp.Check)" OnClick="@(() => _isEditing = false)"/>
-}
-else
-{
-    <MudText Style="@(Todo.Checked ? "text-decoration:line-through" : "")" @onclick="ToggleChecked">
-        @Todo.Text
-    </MudText>
-    <MudIconButton Icon="@(Icons.Sharp.Create)" OnClick="@(_ => _isEditing = true)"/>
-    <MudIconButton Icon="@(Icons.Sharp.Delete)" OnClick="OnDelete"/>
-}
+<MudListItem>
+    @if (_isEditing)
+    {
+        <MudInput @bind-Value="Todo.Text" TextChanged="() => TodoRepository.Update(Todo)"/>
+        <MudIconButton Icon="@(Icons.Sharp.Check)" OnClick="@(() => _isEditing = false)"/>
+    }
+    else
+    {
+        <MudButton Style="text-transform: none;" OnClick="ToggleChecked">
+            <MudText Style="@(Todo.Checked ? "text-decoration:line-through" : "")">
+                @Todo.Text
+            </MudText>
+        </MudButton>
+        <MudIconButton Icon="@(Icons.Sharp.Create)" OnClick="@(_ => _isEditing = true)"/>
+        <MudIconButton Icon="@(Icons.Sharp.Delete)" OnClick="OnDelete"/>
+    }
+</MudListItem>
 
 @code {
 

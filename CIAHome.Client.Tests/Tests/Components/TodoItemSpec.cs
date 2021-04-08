@@ -168,9 +168,9 @@ namespace CIAHome.Client.Tests
 		}
 
 		[Fact]
-		public void clicking_text_toggles_Checked_to_true()
+		public void clicking_Todo_toggles_Checked_to_true()
 		{
-			SUT.Find("p").Click();
+			SUT.Find("button").Click();
 
 			Assert.True(_todo.Checked);
 		}
