@@ -1,31 +1,7 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:Int64 x:Key="/Default/Environment/Hierarchy/Build/BuildTool/MsBuildSolutionLoadingNodeCount/@EntryValue">4</s:Int64>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2749ac83_002D506f_002D482a_002D8621_002D776e0e8e728d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="CreateTodoAsync_returns_new_Todo #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Services.TodoServiceSpec.CreateTodoAsync_returns_new_Todo&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Services.TodoServiceSpec.CreateTodoListAsync_returns_newTodoList&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Services.TodoServiceSpec.TodosAsync_with_null_returns_todos_without_list&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Services.TodoServiceSpec.TodoListsAsync_returns_all_TodoLists&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Pages.TodosSpec.contains_add_button&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Pages.TodosSpec.Test&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Pages.TodosSpec.contains_TodoListItem_foreach_TodoList&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Pages.TodosSpec&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6b4d9817_002D3467_002D4f07_002Db401_002Dd22a0ce70170/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CreateTodoAsync_returns_new_Todo #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Services.TodoServiceSpec.CreateTodoAsync_returns_new_Todo&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=701092af_002D16bb_002D42a9_002D8a95_002Dac45deec6bdd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CreateTodoAsync_returns_new_Todo" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Services.TodoServiceSpec.CreateTodoAsync_returns_new_Todo&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a8a3b624_002D7e66_002D4592_002D9572_002Dbdedffc75cec/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CreateTodoAsync_returns_new_Todo #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::A9FA905F-D132-423A-8FC2-2FF8E889D81A::net5.0::CIAHome.Client.Tests.Services.TodoServiceSpec.CreateTodoAsync_returns_new_Todo&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=41ea6ae6_002D88a8_002D45e4_002Da63e_002D51cfde545140/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;CIAHome.Client.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\Wayne\RiderProjects\CIAHome\CIAHome.Client.Tests" Presentation="&amp;lt;CIAHome.Client.Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
 	
@@ -38,16 +14,8 @@
 	
 	
 	
-	</wpf:ResourceDictionary>	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2749ac83_002D506f_002D482a_002D8621_002D776e0e8e728d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="CreateTodoAsync_returns_new_Todo #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Or&gt;&#xD;
-    &lt;Project Location="C:\Users\Wayne\RiderProjects\CIAHome\CIAHome.Client.Tests" Presentation="&amp;lt;CIAHome.Client.Tests&amp;gt;" /&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;xUnit::67001F16-2F75-4677-8E94-2D9748387627::net5.0::CIAHome.Client.Tests.Shared.MainLayoutSpec&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::67001F16-2F75-4677-8E94-2D9748387627::net5.0::CIAHome.Client.Tests.Pages.SettingsSpec&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
-  &lt;/Or&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
 	
 	
 	
-	</wpf:ResourceDictionary>
+	
+	</wpf:ResourceDictionary>	

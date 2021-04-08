@@ -1,4 +1,5 @@
 ﻿using System;
+using AngleSharp.Css.Dom;
 using Bunit;
 using CIAHome.Client.Components.ListItems;
 using CIAHome.Shared.Interfaces;
@@ -152,9 +153,9 @@ namespace CIAHome.Client.Tests
 		{
 			_todo.Checked = true;
 
-			var text = SUT.FindComponent<MudText>();
+			var text = SUT.FindComponent<MudText>().Find("p");
 
-			Assert.Contains("text-decoration:line-through", text.Instance.Style.Trim());
+			Assert.Contains("line-through", text.GetStyle()["text-decoration"]);
 		}
 
 		[Fact]
@@ -162,9 +163,9 @@ namespace CIAHome.Client.Tests
 		{
 			_todo.Checked = false;
 
-			var text = SUT.FindComponent<MudText>();
+			var text = SUT.FindComponent<MudText>().Find("p");
 
-			Assert.DoesNotContain("line-through", text.Instance.Style.Trim());
+			Assert.DoesNotContain("line-through", text.GetStyle()["text-decoration"]);
 		}
 
 		[Fact]
