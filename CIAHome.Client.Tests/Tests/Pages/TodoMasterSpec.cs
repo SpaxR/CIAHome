@@ -5,6 +5,8 @@ using CIAHome.Client.Components.Todo;
 using CIAHome.Client.Pages.Todo;
 using CIAHome.Shared.Interfaces;
 using CIAHome.Shared.Model;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using MudBlazor;
@@ -16,6 +18,8 @@ namespace CIAHome.Client.Tests
 	{
 		private          IRenderedComponent<TodoMaster>   _sut;
 		private readonly Mock<IAsyncRepository<TodoList>> _listRepositoryMock = new();
+
+		private readonly FakeNavigationManager _navigation;
 
 		private IRenderedComponent<TodoMaster> SUT
 		{
@@ -31,6 +35,9 @@ namespace CIAHome.Client.Tests
 		{
 			JSInterop.Mode = JSRuntimeMode.Loose;
 			Services.AddScoped(_ => _listRepositoryMock.Object);
+			Services.AddScoped<NavigationManager>(_ => _navigation);
+
+			_navigation = new FakeNavigationManager(Renderer);
 		}
 
 
@@ -52,7 +59,6 @@ namespace CIAHome.Client.Tests
 
 			Assert.Equal(lists.Count, cards.Count);
 		}
-
 
 		[Fact]
 		public void Adding_List_adds_ListCard()
@@ -85,7 +91,7 @@ namespace CIAHome.Client.Tests
 		{
 			var list = new TodoList();
 			_listRepositoryMock.Setup(repo => repo.All()).ReturnsAsync(new[] {list});
-			
+
 			SUT.InvokeAsync(SUT.FindComponent<TodoListCard>().Instance.OnDelete.InvokeAsync);
 
 			_listRepositoryMock.Verify(repo => repo.Delete(list));
@@ -104,6 +110,19 @@ namespace CIAHome.Client.Tests
 			var cards = SUT.FindComponents<TodoListCard>();
 
 			Assert.Equal(0, cards.Count);
+		}
+
+		[Fact]
+		public void Clicking_ListCard_navigates_to_Detail_View()
+		{
+			_listRepositoryMock.Setup(repository => repository.All()).ReturnsAsync(new[] {new TodoList()});
+
+			var card = SUT.FindComponent<TodoListCard>().Find("div");
+
+			Assert.Raises<LocationChangedEventArgs>(
+				handler => _navigation.LocationChanged += handler,
+				handler => _navigation.LocationChanged -= handler,
+				() => card.Click());
 		}
 	}
 }

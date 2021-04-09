@@ -9,7 +9,9 @@
         @foreach (var list in _lists)
         {
             <MudItem>
-                <TodoListCard List="@list" OnDelete="@(() => DeleteList(list))"></TodoListCard>
+                <TodoListCard List="@list" 
+                              OnDelete="@(() => DeleteList(list))" 
+                              @onclick="@(() => Navigation.NavigateTo("/todos/" + list.Id))"/>
             </MudItem>
         }
     </MudGrid>
