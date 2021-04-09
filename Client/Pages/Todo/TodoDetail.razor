@@ -1,5 +1,10 @@
 ﻿@page "/todos/{id}"
 @inject IAsyncRepository<TodoList> TodoRepository
+@inject NavigationManager Navigation
+
+<MudIconButton Icon="@(Icons.Sharp.ArrowBack)" OnClick="@(() => Navigation.NavigateTo("/todos"))"/>
+
+<MudText>@_list.Text</MudText>
 
 <MudList>
     @if (_list != null)
@@ -23,7 +28,7 @@
     private TodoList _list;
 
     /// <inheritdoc />
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         _list = await TodoRepository.Find(Id);
     }

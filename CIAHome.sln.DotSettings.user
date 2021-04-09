@@ -1,11 +1,9 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:Int64 x:Key="/Default/Environment/Hierarchy/Build/BuildTool/MsBuildSolutionLoadingNodeCount/@EntryValue">4</s:Int64>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=41ea6ae6_002D88a8_002D45e4_002Da63e_002D51cfde545140/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;CIAHome.Client.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Or&gt;&#xD;
-    &lt;Project Location="C:\Users\Wayne\RiderProjects\CIAHome\CIAHome.Client.Tests" Presentation="&amp;lt;CIAHome.Client.Tests&amp;gt;" /&gt;&#xD;
-    &lt;Project Location="C:\Users\Wayne\RiderProjects\CIAHome\Shared" Presentation="&amp;lt;CIAHome.Shared&amp;gt;" /&gt;&#xD;
-  &lt;/Or&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=598960b0_002Dcf10_002D427e_002D93a4_002D8a5b3d0b2a1c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;CIAHome.Client.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\SR\RiderProjects\CIAHome\CIAHome.Client.Tests" Presentation="&amp;lt;CIAHome.Client.Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Blazored/@EntryIndexedValue">True</s:Boolean>
 	
 	

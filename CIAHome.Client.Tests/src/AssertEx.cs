@@ -2,6 +2,7 @@
 using System.Linq;
 using Bunit;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace CIAHome.Client.Tests
 {
@@ -15,11 +16,17 @@ namespace CIAHome.Client.Tests
 									args => handler.Invoke(null, args));
 		}
 
-		public static IRenderedComponent<TR> FindComponent<TR>(this IRenderedComponent<IComponent>        component,
-																  Func<IRenderedComponent<TR>, bool> predicate)
-			where TR : IComponent
+		public static IRenderedComponent<T> FindComponent<T>(this IRenderedComponent<IComponent> component,
+															 Func<IRenderedComponent<T>, bool>   predicate)
+			where T : IComponent
 		{
-			return component.FindComponents<TR>().FirstOrDefault(predicate);
+			return component.FindComponents<T>().FirstOrDefault(predicate);
+		}
+
+		public static IRenderedComponent<MudIconButton> FindIconButton(this IRenderedComponent<IComponent> component,
+																	   string                              icon)
+		{
+			return component.FindComponent<MudIconButton>(btn => btn.Instance.Icon.Equals(icon));
 		}
 	}
 }

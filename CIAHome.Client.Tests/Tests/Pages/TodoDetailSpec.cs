@@ -1,9 +1,12 @@
 ﻿using System.Threading.Tasks;
+using AngleSharp.Dom;
 using Bunit;
 using CIAHome.Client.Components.Todo;
 using CIAHome.Client.Pages.Todo;
 using CIAHome.Shared.Interfaces;
 using CIAHome.Shared.Model;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using MudBlazor;
@@ -15,33 +18,36 @@ namespace CIAHome.Client.Tests
 	{
 		private          IRenderedComponent<TodoDetail>   _sut;
 		private readonly Mock<IAsyncRepository<TodoList>> _repositoryMock = new();
-		private readonly Mock<TodoList>                   _listMock       = new();
+		private readonly TodoList                         _list           = new();
+		private readonly FakeNavigationManager            _navigation;
 
 		private IRenderedComponent<TodoDetail> SUT
 		{
 			get
 			{
-				_sut ??= RenderComponent<TodoDetail>((nameof(TodoDetail.Id), _listMock.Object.Id));
+				_sut ??= RenderComponent<TodoDetail>((nameof(TodoDetail.Id), _list.Id));
 				return _sut;
 			}
 		}
 
 		public TodoDetailSpec()
 		{
-			_listMock.Object.Id = new TodoList().Id;
-			_repositoryMock.Setup(repository => repository.Find(_listMock.Object.Id)).ReturnsAsync(_listMock.Object);
+			_repositoryMock.Setup(repository => repository.Find(_list.Id)).ReturnsAsync(_list);
 
 			Services.AddScoped(_ => _repositoryMock.Object);
+			Services.AddScoped<NavigationManager>(_ => _navigation);
+
+			_navigation = new FakeNavigationManager(Renderer);
 		}
 
 		[Fact]
 		public void WithId_loads_Todos_of_List()
 		{
-			_listMock.Object.Todos.Add(new Todo());
+			_list.Todos.Add(new Todo());
 
 			var todoItems = SUT.FindComponents<TodoItem>();
 
-			Assert.Equal(_listMock.Object.Todos.Count, todoItems.Count);
+			Assert.Equal(_list.Todos.Count, todoItems.Count);
 		}
 
 		[Fact]
@@ -50,6 +56,20 @@ namespace CIAHome.Client.Tests
 			var button = SUT.FindComponent<MudButton>();
 
 			Assert.NotNull(button);
+		}
+
+		[Fact]
+		public void contains_Text_of_list()
+		{
+			var text = SUT.FindComponent<MudText>();
+
+			Assert.Contains(_list.Text, text.Markup);
+		}
+
+		[Fact]
+		public void contains_return_button()
+		{
+			Assert.NotNull(SUT.FindIconButton(Icons.Sharp.ArrowBack));
 		}
 
 		[Fact]
@@ -63,7 +83,7 @@ namespace CIAHome.Client.Tests
 		[Fact]
 		public async Task Deleting_Todo_removes_TodoItem()
 		{
-			_listMock.Object.Todos.Add(new Todo());
+			_list.Todos.Add(new Todo());
 
 			await SUT.InvokeAsync(SUT.FindComponent<TodoItem>().Instance.OnDelete.InvokeAsync);
 
@@ -73,38 +93,38 @@ namespace CIAHome.Client.Tests
 		[Fact]
 		public async Task Deleting_Todo_removes_Todo_from_List()
 		{
-			_listMock.Object.Todos.Add(new Todo());
+			_list.Todos.Add(new Todo());
 
 			await SUT.InvokeAsync(SUT.FindComponent<TodoItem>().Instance.OnDelete.InvokeAsync);
 
-			Assert.Empty(_listMock.Object.Todos);
+			Assert.Empty(_list.Todos);
 		}
 
 		[Fact]
 		public async Task Deleting_Todo_updates_List_in_Repository()
 		{
-			_listMock.Object.Todos.Add(new Todo());
+			_list.Todos.Add(new Todo());
 
 			await SUT.InvokeAsync(SUT.FindComponent<TodoItem>().Instance.OnDelete.InvokeAsync);
 
-			_repositoryMock.Verify(repository => repository.Update(_listMock.Object));
+			_repositoryMock.Verify(repository => repository.Update(_list));
 		}
 
 		[Fact]
 		public void Invoking_TodoItem_OnDelete_deletes_Todo()
 		{
-			_listMock.Object.Todos.Add(new Todo());
+			_list.Todos.Add(new Todo());
 
 			SUT.InvokeAsync(SUT.FindComponent<TodoItem>().Instance.OnDelete.InvokeAsync);
 
-			Assert.Empty(_listMock.Object.Todos);
-			_repositoryMock.Verify(repository => repository.Update(_listMock.Object));
+			Assert.Empty(_list.Todos);
+			_repositoryMock.Verify(repository => repository.Update(_list));
 		}
 
 		[Fact]
 		public void contains_TodoItem_foreach_Todo_in_List()
 		{
-			_listMock.Object.Todos.Add(new Todo());
+			_list.Todos.Add(new Todo());
 
 			Assert.Equal(1, SUT.FindComponents<TodoItem>().Count);
 		}
@@ -112,11 +132,22 @@ namespace CIAHome.Client.Tests
 		[Fact]
 		public void Invoking_TodoItem_OnUpdate_updates_List_in_Repository()
 		{
-			_listMock.Object.Todos.Add(new Todo());
+			_list.Todos.Add(new Todo());
 
 			SUT.InvokeAsync(SUT.FindComponent<TodoItem>().Instance.OnUpdate.InvokeAsync);
 
-			_repositoryMock.Verify(repository => repository.Update(_listMock.Object));
+			_repositoryMock.Verify(repository => repository.Update(_list));
+		}
+
+		[Fact]
+		public void Click_BackButton_navigates_to_TodosPage()
+		{
+			IElement button = SUT.FindIconButton(Icons.Sharp.ArrowBack).Find("button");
+
+			Assert.Raises<LocationChangedEventArgs>(
+				handler => _navigation.LocationChanged += handler,
+				handler => _navigation.LocationChanged -= handler,
+				() => button.Click());
 		}
 	}
 }
