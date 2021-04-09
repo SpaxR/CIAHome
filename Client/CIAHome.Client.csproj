@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Shared\CIAHome.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Repositories\TodoRepository.cs" />
+  </ItemGroup>
+
 </Project>

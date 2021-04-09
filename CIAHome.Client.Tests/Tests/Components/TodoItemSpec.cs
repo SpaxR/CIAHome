@@ -17,8 +17,8 @@ namespace CIAHome.Client.Tests
 	{
 		private IRenderedComponent<TodoItem> _sut;
 
-		private readonly Todo                         _todo           = new();
-		private readonly Mock<IAsyncRepository<Todo>> _todoRepository = new();
+		private readonly Todo                             _todo           = new();
+		private readonly Mock<IAsyncRepository<TodoList>> _listRepository = new();
 
 		private IRenderedComponent<TodoItem> SUT
 		{
@@ -31,7 +31,7 @@ namespace CIAHome.Client.Tests
 
 		public TodoItemSpec()
 		{
-			Services.AddScoped(_ => _todoRepository.Object);
+			Services.AddScoped(_ => _listRepository.Object);
 		}
 
 		private void Enable_Editing()
@@ -86,17 +86,6 @@ namespace CIAHome.Client.Tests
 		}
 
 		[Fact]
-		public void editing_Text_updates_Todo_in_Repository()
-		{
-			Enable_Editing();
-			var input = SUT.FindComponent<MudInput<string>>();
-
-			input.Find("input").Change("SOME TEXT");
-
-			_todoRepository.Verify(repo => repo.Update(_todo));
-		}
-
-		[Fact]
 		public void editing_Text_shows_Confirm_IconButton()
 		{
 			Enable_Editing();
@@ -107,7 +96,7 @@ namespace CIAHome.Client.Tests
 		}
 
 		[Fact]
-		public void editing_Text_does_not_show_delete_IconButton()
+		public void editing_Text_hides_delete_IconButton()
 		{
 			Enable_Editing();
 
@@ -177,11 +166,28 @@ namespace CIAHome.Client.Tests
 		}
 
 		[Fact]
-		public void toggling_Checked_updates_Todo_in_Repository()
+		public void toggling_Checked_triggers_OnUpdate()
 		{
-			SUT.Find("p").Click();
+			Assert.Raises<EventArgs>(
+				handler => SUT.SetParametersAndRender((nameof(TodoItem.OnUpdate), handler.AsCallback())),
+				_ => {},
+				() => SUT.Find("p").Click());
+		}
 
-			_todoRepository.Verify(repo => repo.Update(_todo));
+		[Fact]
+		public void clicking_Confirm_callsOnUpdate()
+		{
+			Assert.Raises<EventArgs>(
+				handler => SUT.SetParametersAndRender((nameof(TodoItem.OnUpdate), handler.AsCallback())),
+				_ => {},
+				() =>
+				{
+					Enable_Editing();
+					var button = SUT.FindComponent<MudIconButton>(btn => btn.Instance.Icon == Icons.Sharp.Check);
+					button
+						.Find("button")
+						.Click();
+				});
 		}
 	}
 }

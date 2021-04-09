@@ -28,6 +28,12 @@ namespace CIAHome.Client.Repositories
 		}
 
 		/// <inheritdoc />
+		public Task<TodoList> Find(string id)
+		{
+			return _storage.GetItemAsync<TodoList>(id ?? nameof(Todo)).AsTask();
+		}
+
+		/// <inheritdoc />
 		public async Task<TodoList> Find(Func<TodoList, bool> predicate)
 		{
 			string[] ids = await _storage.GetItemAsync<string[]>(nameof(TodoList)) ?? Array.Empty<string>();

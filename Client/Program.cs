@@ -31,10 +31,8 @@ namespace CIAHome.Client
 			builder.Services.AddBlazoredLocalStorage();
 			
 			builder.Services.AddScoped<IThemeProvider, ThemeProvider>();
-			builder.Services.AddScoped<IAsyncRepository<Todo>, TodoRepository>();
 			builder.Services.AddScoped<IAsyncRepository<TodoList>, TodoListRepository>();
-
-
+			
 			await builder.Build().RunAsync();
 		}
 	}

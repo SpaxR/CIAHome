@@ -1,10 +1,8 @@
-﻿@inject IAsyncRepository<Todo> TodoRepository
-
-<MudListItem>
+﻿<MudListItem>
     @if (_isEditing)
     {
-        <MudInput @bind-Value="Todo.Text" TextChanged="() => TodoRepository.Update(Todo)"/>
-        <MudIconButton Icon="@(Icons.Sharp.Check)" OnClick="@(() => _isEditing = false)"/>
+        <MudInput @bind-Value="Todo.Text"/>
+        <MudIconButton Icon="@(Icons.Sharp.Check)" OnClick="ToggleEditing"/>
     }
     else
     {
@@ -13,7 +11,7 @@
                 @Todo.Text
             </MudText>
         </MudButton>
-        <MudIconButton Icon="@(Icons.Sharp.Create)" OnClick="@(_ => _isEditing = true)"/>
+        <MudIconButton Icon="@(Icons.Sharp.Create)" OnClick="ToggleEditing"/>
         <MudIconButton Icon="@(Icons.Sharp.Delete)" OnClick="OnDelete"/>
     }
 </MudListItem>
@@ -26,6 +24,9 @@
     [Parameter]
     public EventCallback<MouseEventArgs> OnDelete { get; set; }
 
+    [Parameter]
+    public EventCallback<EventArgs> OnUpdate { get; set; }
+
     private bool _isEditing;
 
     /// <inheritdoc />
@@ -37,7 +38,15 @@
     private async Task ToggleChecked()
     {
         Todo.Checked = !Todo.Checked;
-        await TodoRepository.Update(Todo);
+        await OnUpdate.InvokeAsync(new EventArgs());
+    }
+
+    private async Task ToggleEditing()
+    {
+        if (_isEditing)
+            await OnUpdate.InvokeAsync(new EventArgs());
+
+        _isEditing = !_isEditing;
     }
 
 }

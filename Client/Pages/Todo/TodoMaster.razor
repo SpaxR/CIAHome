@@ -1,6 +1,5 @@
 ﻿@page "/todos"
 
-@inject IAsyncRepository<Todo> TodoRepository
 @inject IAsyncRepository<TodoList> TodoListRepository
 @inject NavigationManager Navigation
 
@@ -20,37 +19,13 @@
 
 <MudDivider/>
 
-@if (_uncategorized.Any())
-{
-    <MudList>
-        @foreach (var todo in _uncategorized)
-        {
-            <TodoItem Todo="@todo" OnDelete="@(() => DeleteTodo(todo))"></TodoItem>
-        }
-    </MudList>
-}
-<MudButton OnClick="AddTodo">Add Todo</MudButton>
-
-
 @code {
 
-    [Parameter]
-    public string Id { get; set; }
-
     private IEnumerable<TodoList> _lists = Enumerable.Empty<TodoList>();
-    private IEnumerable<Todo> _uncategorized = Enumerable.Empty<Todo>();
 
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
-        if (!string.IsNullOrEmpty(Id))
-        {
-            _uncategorized = (await TodoListRepository.Find(list => list.Id.Equals(Id))).Todos;
-        }
-        else
-        {
-            _uncategorized = await TodoRepository.All();
-        }
         _lists = await TodoListRepository.All();
     }
 
@@ -66,16 +41,8 @@
         _lists = await TodoListRepository.All();
     }
 
-    private async Task AddTodo()
-    {
-        await TodoRepository.Create();
-        _uncategorized = await TodoRepository.All();
-    }
 
-    private async Task DeleteTodo(Todo todo)
-    {
-        await TodoRepository.Delete(todo);
-        _uncategorized = await TodoRepository.All();
-    }
+
+
 
 }

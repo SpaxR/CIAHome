@@ -77,7 +77,30 @@ namespace CIAHome.Client.Tests
 
 			Assert.Null(result);
 		}
-		
+
+		[Fact]
+		public async Task Find_Id_returns_TodoList_with_specified_Id()
+		{
+			var list = new TodoList();
+			SetupLists(list);
+
+			var result = await _sut.Find(list.Id);
+
+			Assert.Equal(list.Id, result.Id);
+			_storageMock.Verify(storage => storage.GetItemAsync<TodoList>(list.Id));
+		}
+
+		[Fact]
+		public async Task Find_Id_withNull_returns_uncategorized_TodoList()
+		{
+			var list = new TodoList {Id = null, Todos = {new Todo()}};
+			_storageMock.Setup(storage => storage.GetItemAsync<TodoList>(nameof(Todo))).ReturnsAsync(list);
+
+			var result = await _sut.Find((string) null);
+
+			Assert.Equal(list, result);
+		}
+
 		[Fact]
 		public async Task All_returns_all_lists()
 		{
@@ -99,7 +122,7 @@ namespace CIAHome.Client.Tests
 
 			Assert.NotNull(result);
 		}
-		
+
 		[Fact]
 		public async Task Update_stores_TodoList()
 		{
@@ -130,7 +153,7 @@ namespace CIAHome.Client.Tests
 
 			_storageMock.Verify(storage => storage.SetItemAsync(nameof(TodoList), new[] {list.Id}));
 		}
-
+		
 		[Fact]
 		public async Task Delete_removes_TodoList_from_Storage()
 		{
@@ -152,5 +175,6 @@ namespace CIAHome.Client.Tests
 
 			_storageMock.Verify(storage => storage.SetItemAsync(nameof(TodoList), Array.Empty<string>()));
 		}
+		
 	}
 }
