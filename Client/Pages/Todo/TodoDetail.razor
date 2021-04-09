@@ -1,9 +1,44 @@
 ﻿@page "/todos/{id}"
-<h3>TodoDetail</h3>
+@inject IAsyncRepository<TodoList> TodoRepository
+
+<MudList>
+    @if (_list != null)
+    {
+        @foreach (var todo in _list.Todos)
+        {
+            <TodoItem Todo="@todo"
+                      OnUpdate="@(() => TodoRepository.Update(_list))"
+                      OnDelete="@(() => DeleteTodo(todo))"/>
+        }
+    }
+</MudList>
+
+<MudButton OnClick="AddTodo">Add Todo</MudButton>
 
 @code {
-    
+
     [Parameter]
     public string Id { get; set; }
-    
+
+    private TodoList _list;
+
+    /// <inheritdoc />
+    protected override async Task OnParametersSetAsync()
+    {
+        _list = await TodoRepository.Find(Id);
+    }
+
+    private async Task AddTodo()
+    {
+        _list.Todos.Add(new Todo());
+        await TodoRepository.Update(_list);
+    }
+
+    private async Task DeleteTodo(Todo todo)
+    {
+        _list.Todos.Remove(todo);
+        await TodoRepository.Update(_list);
+    }
+
+
 }
