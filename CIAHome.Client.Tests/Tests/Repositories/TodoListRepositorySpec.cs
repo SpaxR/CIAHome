@@ -147,8 +147,8 @@ namespace CIAHome.Client.Tests
 		public async Task Update_does_not_duplicate_id_in_Storage_List()
 		{
 			var list = new TodoList();
+			SetupLists(list);
 
-			await _sut.Update(list);
 			await _sut.Update(list);
 
 			_storageMock.Verify(storage => storage.SetItemAsync(nameof(TodoList), new[] {list.Id}));
