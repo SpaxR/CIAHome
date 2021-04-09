@@ -4,21 +4,26 @@
 
 <MudIconButton Icon="@(Icons.Sharp.ArrowBack)" OnClick="@(() => Navigation.NavigateTo("/todos"))"/>
 
-<MudText>@_list.Text</MudText>
+@if (_isLoading)
+{
+    <MudSkeleton Height="5em" Width="20em"/>
+    <MudSkeleton Height="20em" SkeletonType="SkeletonType.Rectangle"/>
+}
+else
+{
+    <MudText>@_list.Text</MudText>
 
-<MudList>
-    @if (_list != null)
-    {
+    <MudList>
         @foreach (var todo in _list.Todos)
         {
             <TodoItem Todo="@todo"
                       OnUpdate="@(() => TodoRepository.Update(_list))"
                       OnDelete="@(() => DeleteTodo(todo))"/>
         }
-    }
-</MudList>
+    </MudList>
 
-<MudButton OnClick="AddTodo">Add Todo</MudButton>
+    <MudButton OnClick="AddTodo">Add Todo</MudButton>
+}
 
 @code {
 
@@ -27,10 +32,13 @@
 
     private TodoList _list;
 
+    private bool _isLoading = true;
+
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
         _list = await TodoRepository.Find(Id);
+        _isLoading = false;
     }
 
     private async Task AddTodo()
