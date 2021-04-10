@@ -11,7 +11,17 @@
 }
 else
 {
-    <MudText>@_list.Text</MudText>
+    @if (_isEditing)
+    {
+        <MudInput @bind-Value="_list.Text"/>
+        <MudIconButton Icon="@(Icons.Sharp.Check)" OnClick="TextChanged"/>
+    }
+    else
+    {
+        <MudText>@_list.Text</MudText>
+        <MudIconButton Icon="@(Icons.Sharp.Create)" OnClick="() => _isEditing = true"/>
+    }
+
 
     <MudList>
         @foreach (var todo in _list.Todos)
@@ -34,6 +44,8 @@ else
 
     private bool _isLoading = true;
 
+    private bool _isEditing;
+
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
@@ -53,5 +65,10 @@ else
         await TodoRepository.Update(_list);
     }
 
+    private async Task TextChanged()
+    {
+        await TodoRepository.Update(_list);
+        _isEditing = false;
+    }
 
 }

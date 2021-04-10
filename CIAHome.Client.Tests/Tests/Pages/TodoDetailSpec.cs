@@ -73,6 +73,28 @@ namespace CIAHome.Client.Tests
 		}
 
 		[Fact]
+		public void contains_Edit_Button_for_TodoList_Text()
+		{
+			var button = SUT.FindIconButton(Icons.Sharp.Create);
+
+			Assert.NotNull(button);
+		}
+
+		[Fact]
+		public void contains_Confirm_Button_while_editing_Text()
+		{
+			SUT.FindIconButton(Icons.Sharp.Create).Find("button").Click();
+
+			Assert.NotNull(SUT.FindIconButton(Icons.Sharp.Check));
+		}
+
+		[Fact]
+		public void does_not_contain_Input_if_not_editing()
+		{
+			Assert.Empty(SUT.FindComponents<MudInput<string>>());
+		}
+		
+		[Fact]
 		public void Adding_Todo_adds_TodoItem()
 		{
 			SUT.FindComponent<MudButton>().Find("button").Click();
@@ -148,6 +170,68 @@ namespace CIAHome.Client.Tests
 				handler => _navigation.LocationChanged += handler,
 				handler => _navigation.LocationChanged -= handler,
 				() => button.Click());
+		}
+
+		[Fact]
+		public void Click_EditButton_shows_Input()
+		{
+			SUT.FindIconButton(Icons.Sharp.Create).Find("button").Click();
+
+			Assert.NotNull(SUT.FindComponent<MudInput<string>>());
+		}
+
+		[Fact]
+		public void Input_has_Text_of_TodoList_as_default()
+		{
+			_list.Text = "SOME TEXT";
+			SUT.FindIconButton(Icons.Sharp.Create).Find("button").Click();
+			var input = SUT.FindComponent<MudInput<string>>();
+
+			Assert.Contains(_list.Text, input.Markup);
+		}
+
+		[Fact]
+		public void Confirming_TextChange_updates_Text_of_TodoList()
+		{
+			SUT.FindIconButton(Icons.Sharp.Create).Find("button").Click();
+			var input   = SUT.FindComponent<MudInput<string>>().Find("input");
+			var confirm = SUT.FindIconButton(Icons.Sharp.Check).Find("button");
+
+			input.Change("SOME NEW TEXT");
+			confirm.Click();
+
+			Assert.Equal("SOME NEW TEXT", _list.Text);
+		}
+
+		[Fact]
+		public void Confirming_TextChange_updates_List_in_Repository()
+		{
+			SUT.FindIconButton(Icons.Sharp.Create).Find("button").Click();
+			var input   = SUT.FindComponent<MudInput<string>>().Find("input");
+			var confirm = SUT.FindIconButton(Icons.Sharp.Check).Find("button");
+
+			input.Change("SOME NEW TEXT");
+			confirm.Click();
+
+			_repositoryMock.Verify(repository => repository.Update(_list));
+		}
+
+		[Fact]
+		public void Editing_Text_does_not_show_Text()
+		{
+			SUT.FindIconButton(Icons.Sharp.Create).Find("button").Click();
+			
+			Assert.Empty(SUT.FindComponents<MudText>());
+		}
+
+		[Fact]
+		public void Confirming_Text_switches_back_to_Text()
+		{
+			SUT.FindIconButton(Icons.Sharp.Create).Find("button").Click();
+			SUT.FindIconButton(Icons.Sharp.Check).Find("button").Click();
+			
+			contains_Text_of_list();
+			does_not_contain_Input_if_not_editing();
 		}
 	}
 }
