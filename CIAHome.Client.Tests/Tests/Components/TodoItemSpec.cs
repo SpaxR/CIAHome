@@ -189,5 +189,24 @@ namespace CIAHome.Client.Tests
 						.Click();
 				});
 		}
+
+		[Fact]
+		public void Checkbox_is_Checked_when_Todo_is_Checked()
+		{
+			_todo.Checked = true;
+			var checkbox = SUT.FindComponent<MudCheckBox<bool>>();
+			
+			Assert.True(checkbox.Instance.Checked);
+		}
+
+		[Fact]
+		public void Checkbox_is_not_Checked_when_Todo_is_not_Checked()
+		{
+			_todo.Checked = false;
+			var checkbox = SUT.FindComponent<MudCheckBox<bool>>();
+			
+			Assert.False(checkbox.Instance.Checked);
+		}
+		
 	}
 }
