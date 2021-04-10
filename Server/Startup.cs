@@ -1,3 +1,4 @@
+using CIAHome.Server.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -68,6 +69,7 @@ namespace CIAHome.Server
 			{
 				endpoints.MapRazorPages();
 				endpoints.MapControllers();
+				endpoints.MapFallbackToController("api/{action?}", nameof(ApiController.Fallback), "api");
 				endpoints.MapFallbackToFile("index.html");
 			});
 		}
