@@ -1,0 +1,38 @@
+<MudForm @bind-IsValid="@_isValid">
+    <MudTextField @bind-Value="_model.Username" Label="Username" Required="true"/>
+    <MudTextField @bind-Value="_model.Password" Label="Password" Required="true" InputType="InputType.Password"/>
+
+    <MudCheckBox @bind-Checked="@_model.Remember" Label="Remember me"></MudCheckBox>
+
+    <MudButton Disabled="!_isValid" OnClick="OnSubmit">Login</MudButton>
+</MudForm>
+
+@code {
+
+    [Inject]
+    public IAuthenticationService Authentication { get; set; }
+
+    [Parameter]
+    public EventCallback OnSuccess { get; set; }
+
+    [Parameter]
+    public EventCallback OnFailure { get; set; }
+
+    private readonly LoginModel _model = new();
+
+    private bool _isValid;
+
+    private async Task OnSubmit()
+    {
+        try
+        {
+            await Authentication.Login(_model);
+            await OnSuccess.InvokeAsync();
+        }
+        catch (Exception)
+        {
+            await OnFailure.InvokeAsync();
+        }
+    }
+
+}

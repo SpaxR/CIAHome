@@ -1,14 +1,15 @@
-﻿<h3>RedirectToLogin</h3>
+﻿@inject NavigationManager Navigation
+
+<LoginForm OnSuccess="@(() => Navigation.NavigateTo(_targetUrl))"/>
 
 @code {
 
-    [Inject]
-    NavigationManager Navigation { get; set; }
+    private string _targetUrl;
 
     /// <inheritdoc />
     protected override void OnInitialized()
     {
-        Navigation.NavigateTo($"/login?returnUrl={Navigation.ToBaseRelativePath(Navigation.Uri)}");
+        _targetUrl = Navigation.Uri;
     }
 
 }

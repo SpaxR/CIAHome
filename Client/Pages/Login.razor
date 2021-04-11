@@ -1,21 +1,4 @@
 ﻿@page "/login"
-@inject HttpClient _http
-@inject IAuthenticationService _authentication
+@inject NavigationManager Navigation
 
-<EditForm Model="_userInput" OnValidSubmit="OnSubmit">
-    <MudTextField @bind-Value="_userInput.Username" Immediate="true" Label="Username" Required="true"/>
-    <MudTextField @bind-Value="_userInput.Password" Immediate="true" Label="Password" Required="true" InputType="InputType.Password"/>
-    <MudCheckBox @bind-Checked="@_userInput.Remember">Remember me</MudCheckBox>
-    <MudButton ButtonType="ButtonType.Submit">Login</MudButton>
-</EditForm>
-
-@code {
-
-    private readonly LoginModel _userInput = new();
-
-    private async Task OnSubmit()
-    {
-        await _authentication.Login(_userInput);
-    }
-
-}
+<LoginForm OnSuccess="@(() => Navigation.NavigateTo("/"))"/>

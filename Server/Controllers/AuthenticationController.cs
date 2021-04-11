@@ -42,7 +42,7 @@ namespace CIAHome.Server.Controllers
 
 			if (result.Succeeded)
 			{
-				return Redirect(model.ReturnUrl ?? "/");
+				return Ok();
 			}
 
 			return Unauthorized();

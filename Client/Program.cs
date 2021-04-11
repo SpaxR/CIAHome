@@ -24,21 +24,25 @@ namespace CIAHome.Client
 			// builder.Services.AddScoped(_ => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
 			builder.Services.AddHttpClient(string.Empty,
 										   client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
-			
+
 			// MudBlazor
 			builder.Services.AddMudServices();
 			builder.Services.AddMudBlazorDialog();
 			builder.Services.AddMudBlazorSnackbar();
-			
+
 			// Blazored.LocalStorage
 			builder.Services.AddBlazoredLocalStorage();
-			
+
 			// CIA Service
-			builder.Services.AddScoped<AuthenticationStateProvider, CIAuthenticationService>();
-			builder.Services.AddScoped<IAuthenticationService, CIAuthenticationService>();
+			builder.Services.AddScoped<CIAuthenticationService>();
+			builder.Services.AddScoped<AuthenticationStateProvider>(
+				provider => provider.GetRequiredService<CIAuthenticationService>());
+			builder.Services.AddScoped<IAuthenticationService>(
+				provider => provider.GetRequiredService<CIAuthenticationService>());
+
 			builder.Services.AddScoped<IThemeProvider, ThemeProvider>();
 			builder.Services.AddScoped<IAsyncRepository<TodoList>, TodoListRepository>();
-			
+
 			await builder.Build().RunAsync();
 		}
 	}
