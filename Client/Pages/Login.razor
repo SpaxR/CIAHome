@@ -9,27 +9,13 @@
     <MudButton ButtonType="ButtonType.Submit">Login</MudButton>
 </EditForm>
 
-@if (_loginFailed)
-{
-    <span>Login Failed</span>
-}
-
 @code {
-
-    private bool _loginFailed;
 
     private readonly LoginModel _userInput = new();
 
     private async Task OnSubmit()
     {
-        try
-        {
-            await _authentication.Login(_userInput);
-        }
-        catch (Exception)
-        {
-            _loginFailed = true;
-        }
+        await _authentication.Login(_userInput);
     }
 
 }
