@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using CIAHome.Server.Data;
+using CIAHome.Shared;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -69,7 +70,7 @@ namespace CIAHome.Server
 			{
 				endpoints.MapRazorPages();
 				endpoints.MapControllers();
-				endpoints.MapFallbackToController("api/{action?}", nameof(ApiController.Fallback), "api");
+				endpoints.MapFallbackToController(CIAPath.ApiRoute, nameof(ApiController.Fallback), "api");
 				endpoints.MapFallbackToFile("index.html");
 			});
 		}

@@ -1,6 +1,6 @@
 ﻿@page "/login"
-@using CIAHome.Shared.Models
-@using CIAHome.Shared
+@inject HttpClient _http
+@inject IAuthenticationService _authentication
 
 <EditForm Model="_userInput" OnValidSubmit="OnSubmit">
     <MudTextField @bind-Value="_userInput.Username" Immediate="true" Label="Username" Required="true"/>
@@ -16,18 +16,17 @@
 
 @code {
 
-    [Inject]
-    HttpClient Http { get; set; }
-
     private bool _loginFailed;
 
     private readonly LoginModel _userInput = new();
 
     private async Task OnSubmit()
     {
-        var result = await Http.PostAsJsonAsync(CIAPath.Login, _userInput);
-
-        if (!result.IsSuccessStatusCode)
+        try
+        {
+            await _authentication.Login(_userInput);
+        }
+        catch (Exception)
         {
             _loginFailed = true;
         }

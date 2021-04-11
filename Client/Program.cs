@@ -1,5 +1,4 @@
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 using CIAHome.Client.Services;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -19,14 +18,18 @@ namespace CIAHome.Client
 			builder.RootComponents.Add<App>("#app");
 
 			builder.Services.AddAuthorizationCore();
-			
-			builder.Services.AddScoped(_ => new HttpClient
-										   {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
+
+			// builder.Services.AddScoped(_ => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
+			builder.Services.AddHttpClient(string.Empty,
+										   client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 
 			// MudBlazor
 			builder.Services.AddMudServices();
 			builder.Services.AddMudBlazorDialog();
 			builder.Services.AddMudBlazorSnackbar();
+
+			builder.Services.AddScoped<AuthenticationStateProvider, CIAuthenticationService>();
+			builder.Services.AddScoped<IAuthenticationService, CIAuthenticationService>();
 
 			// Blazored.LocalStorage
 			builder.Services.AddBlazoredLocalStorage();
