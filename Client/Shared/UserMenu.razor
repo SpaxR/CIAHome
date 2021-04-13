@@ -1,20 +1,10 @@
-﻿<AuthorizeView>
+﻿@inject IAuthenticationService Authentication
+
+<AuthorizeView>
     <Authorized>
-        <MudButton OnClick="Logout">Logout</MudButton>
+        <MudButton OnClick="Authentication.Logout">Logout</MudButton>
     </Authorized>
     <NotAuthorized>
         <MudButton Link="/login">Login</MudButton>
     </NotAuthorized>
 </AuthorizeView>
-
-@code {
-
-    [Inject]
-    HttpClient Http { get; set; }
-
-    private async Task Logout()
-    {
-        await Http.GetAsync(CIAPath.Logout);
-    }
-
-}
