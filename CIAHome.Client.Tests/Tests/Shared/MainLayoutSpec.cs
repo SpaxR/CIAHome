@@ -16,7 +16,8 @@ namespace CIAHome.Client.Tests
 	public class MainLayoutSpec : TestContext
 	{
 		private          IRenderedComponent<MainLayout> _sut;
-		private readonly Mock<IThemeProvider>           _themeProviderMock = new();
+		private readonly Mock<IThemeProvider>           _themeProviderMock  = new();
+		private readonly Mock<IAuthenticationService>   _authenticationMock = new();
 
 
 		public MainLayoutSpec()
@@ -31,6 +32,7 @@ namespace CIAHome.Client.Tests
 
 			Services.AddScoped(_ => Mock.Of<INavigationInterception>());
 			Services.AddScoped(_ => _themeProviderMock.Object);
+			Services.AddScoped(_ => _authenticationMock.Object);
 		}
 
 		private void CreateSUT()
