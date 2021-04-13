@@ -59,11 +59,17 @@ namespace CIAHome.Client.Services
 
 		public async Task Logout()
 		{
-			var client   = _httpClientFactory.CreateClient();
-			var response = await client.GetAsync(CIAPath.Logout);
-			response.EnsureSuccessStatusCode();
-			await _storage.RemoveItemAsync(nameof(UserProfile));
-			NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+			try
+			{
+				var client   = _httpClientFactory.CreateClient();
+				var response = await client.GetAsync(CIAPath.Logout);
+				response.EnsureSuccessStatusCode();
+			}
+			finally
+			{
+				await _storage.RemoveItemAsync(nameof(UserProfile));
+				NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+			}
 		}
 
 		public async Task<UserProfile> User()

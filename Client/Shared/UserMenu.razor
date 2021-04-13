@@ -2,9 +2,26 @@
 
 <AuthorizeView>
     <Authorized>
-        <MudButton OnClick="Authentication.Logout">Logout</MudButton>
+        <MudButton OnClick="Logout">Logout</MudButton>
     </Authorized>
     <NotAuthorized>
         <MudButton Link="/login">Login</MudButton>
     </NotAuthorized>
 </AuthorizeView>
+
+@code
+{
+
+    private async Task Logout()
+    {
+        try
+        {
+            await Authentication.Logout();
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("Logout failed");
+        }
+    }
+
+}

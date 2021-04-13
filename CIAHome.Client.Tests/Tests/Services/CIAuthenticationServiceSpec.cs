@@ -14,7 +14,7 @@ using Moq.Contrib.HttpClient;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace CIAHome.Client.Tests.Services
+namespace CIAHome.Client.Tests
 {
 	public class CIAuthenticationServiceSpec
 	{
@@ -76,6 +76,24 @@ namespace CIAHome.Client.Tests.Services
 			_httpHandler.SetupAnyRequest().ReturnsResponse(HttpStatusCode.Forbidden);
 
 			await Assert.ThrowsAsync<HttpRequestException>(() => _sut.Logout());
+		}
+
+		[Fact]
+		public async Task Logout_without_Success_Removes_UserProfile_from_Storage()
+		{
+			_httpHandler.SetupAnyRequest().ReturnsResponse(HttpStatusCode.Forbidden);
+
+			await Assert.ThrowsAsync<HttpRequestException>(() => _sut.Logout());
+
+			_storageMock.Verify(storage => storage.RemoveItemAsync(nameof(UserProfile)));
+		}
+
+		[Fact]
+		public async Task Logout_withUnavailableServer_Removes_UserProfile_from_Storage()
+		{
+			await Assert.ThrowsAsync<InvalidOperationException>(() => _sut.Logout());
+
+			_storageMock.Verify(storage => storage.RemoveItemAsync(nameof(UserProfile)));
 		}
 
 		[Fact]
@@ -236,11 +254,11 @@ namespace CIAHome.Client.Tests.Services
 				}
 			};
 			SetupUserProfileStorage(profile);
-			
+
 			var result = await _sut.GetAuthenticationStateAsync();
 
 			var claims = result.User.Claims.ToDictionary(c => c.Type, c => c.Value);
-			
+
 			Assert.Equal(profile.Claims, claims);
 		}
 	}
