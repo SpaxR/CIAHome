@@ -32,6 +32,7 @@ namespace CIAHome.Client
 			
 			builder.Services.AddScoped<IThemeProvider, ThemeProvider>();
 			builder.Services.AddScoped<IAsyncRepository<TodoList>, TodoListRepository>();
+			builder.Services.AddScoped<IAsyncRepository<Product>, ProductRepository>();
 			
 			await builder.Build().RunAsync();
 		}

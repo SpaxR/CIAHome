@@ -1,6 +1,6 @@
 ﻿using System;
 using Bunit;
-using CIAHome.Client.Components.Todo;
+using CIAHome.Client.Components;
 using CIAHome.Shared.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;

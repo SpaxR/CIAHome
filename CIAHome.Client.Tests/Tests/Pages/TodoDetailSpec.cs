@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using AngleSharp.Dom;
 using Bunit;
-using CIAHome.Client.Components.Todo;
-using CIAHome.Client.Pages.Todo;
+using CIAHome.Client.Components;
+using CIAHome.Client.Pages;
 using CIAHome.Shared.Interfaces;
 using CIAHome.Shared.Model;
 using Microsoft.AspNetCore.Components;

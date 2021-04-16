@@ -1,4 +1,5 @@
 ﻿@page "/settings"
+@namespace CIAHome.Client.Pages
 @inject IThemeProvider Themes
 
 <MudSwitch T="bool" Checked="Themes.CurrentTheme == ThemeProvider.DarkTheme" CheckedChanged="ToggleTheme">

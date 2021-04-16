@@ -1,7 +1,7 @@
 ﻿using System;
 using AngleSharp.Css.Dom;
 using Bunit;
-using CIAHome.Client.Components.Todo;
+using CIAHome.Client.Components;
 using CIAHome.Shared.Interfaces;
 using CIAHome.Shared.Model;
 using Microsoft.AspNetCore.Components;
@@ -170,7 +170,7 @@ namespace CIAHome.Client.Tests
 		{
 			Assert.Raises<EventArgs>(
 				handler => SUT.SetParametersAndRender((nameof(TodoItem.OnUpdate), handler.AsCallback())),
-				_ => {},
+				_ => { },
 				() => SUT.Find("p").Click());
 		}
 
@@ -179,7 +179,7 @@ namespace CIAHome.Client.Tests
 		{
 			Assert.Raises<EventArgs>(
 				handler => SUT.SetParametersAndRender((nameof(TodoItem.OnUpdate), handler.AsCallback())),
-				_ => {},
+				_ => { },
 				() =>
 				{
 					Enable_Editing();
@@ -195,7 +195,7 @@ namespace CIAHome.Client.Tests
 		{
 			_todo.Checked = true;
 			var checkbox = SUT.FindComponent<MudCheckBox<bool>>();
-			
+
 			Assert.True(checkbox.Instance.Checked);
 		}
 
@@ -204,9 +204,8 @@ namespace CIAHome.Client.Tests
 		{
 			_todo.Checked = false;
 			var checkbox = SUT.FindComponent<MudCheckBox<bool>>();
-			
+
 			Assert.False(checkbox.Instance.Checked);
 		}
-		
 	}
 }

@@ -10,8 +10,8 @@ namespace CIAHome.Client.Tests
 {
 	public class ProductRepositorySpec
 	{
-		private ProductRepository          _sut;
-		private Mock<ILocalStorageService> _storageMock = new();
+		private          ProductRepository          _sut;
+		private readonly Mock<ILocalStorageService> _storageMock = new();
 
 		private ProductRepository SUT
 		{

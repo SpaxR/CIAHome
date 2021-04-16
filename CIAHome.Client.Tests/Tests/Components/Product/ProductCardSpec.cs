@@ -1,7 +1,7 @@
 using Bunit;
-using CIAHome.Client.Components.Product;
+using CIAHome.Client.Components;
 
-namespace CIAHome.Client.Tests.Product
+namespace CIAHome.Client.Tests
 {
 	public class ProductCardSpec : TestContext
 	{
