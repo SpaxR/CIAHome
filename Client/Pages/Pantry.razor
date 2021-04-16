@@ -3,6 +3,21 @@
 @inject IAsyncRepository<Product> Products
 <h3>Pantry</h3>
 
+<MudTextField T="string" TextChanged="OnInput"></MudTextField>
+
+@if (_product != null)
+{
+    <ProductCard Product="_product"/>
+}
+
 @code {
-    
+
+    private Product _product;
+
+    private async Task OnInput(string gtin)
+    {
+        _product = await Products.Find(gtin);
+    }
+
+
 }
