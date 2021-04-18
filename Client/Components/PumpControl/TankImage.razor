@@ -1,0 +1,15 @@
+@namespace CIAHome.Client.Components
+
+<div style="background: url('@Watertank_Empty') no-repeat center / contain">
+    <img src="@Watertank_Filled"  style="clip-path: inset(@(100 - FilledPercentage)% 0 0 0);"
+         width="100%" height="100%" alt="Filled Percentage"/>
+</div>
+
+@code {
+
+    [Parameter]
+    public int FilledPercentage { get; set; }
+
+        private const string Watertank_Empty = "/img/Watertank (White)/Water Tank.png";
+        private const string Watertank_Filled = "/img/Watertank (Blue)/Water Tank.png";
+}
