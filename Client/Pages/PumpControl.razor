@@ -1,6 +1,28 @@
 ﻿@page "/pumpcontrol"
-<h3>PumpControl</h3>
+@inject IPumpControlService PumpControlProxy
+
+<TankImage FilledPercentage="@((int) (100 / Watertank.VolumeTotal * Watertank.VolumeFilled))"/>
 
 @code {
-    
+
+
+    private WatertankStatus Watertank;
+    private PumpStatus Pump;
+
+    /// <inheritdoc />
+    protected override async Task OnInitializedAsync()
+    {
+        PumpControlProxy.WatertankUpdated += (_, args) =>
+        {
+            Watertank = args.Status;
+            StateHasChanged();
+        };
+        PumpControlProxy.PumpUpdated += (_, args) => Pump = args.Status;
+
+        Watertank = await PumpControlProxy.Watertank();
+        Pump = await PumpControlProxy.Pump();
+    }
+
+
+
 }

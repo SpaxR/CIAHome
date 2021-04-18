@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CIAHome.Shared;
 using CIAHome.Shared.EventArgs;
 using CIAHome.Shared.Interfaces;
+using CIAHome.Shared.Model;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CIAHome.Client.Services
@@ -18,17 +19,17 @@ namespace CIAHome.Client.Services
 						  .WithUrl(CIAPaths.PumpControlHub)
 						  .Build();
 
-			_connection.On<PumpEventArgs>(nameof(PumpStatusUpdated),
-										  args => PumpStatusUpdated?.Invoke(this, args));
-			_connection.On<WatertankEventArgs>(nameof(WatertankStatusUpdated),
-											   args => WatertankStatusUpdated?.Invoke(this, args));
+			_connection.On<PumpEventArgs>(nameof(PumpUpdated),
+										  args => PumpUpdated?.Invoke(this, args));
+			_connection.On<WatertankEventArgs>(nameof(WatertankUpdated),
+											   args => WatertankUpdated?.Invoke(this, args));
 		}
 
 		/// <inheritdoc />
-		public event EventHandler<WatertankEventArgs> WatertankStatusUpdated;
+		public event EventHandler<WatertankEventArgs> WatertankUpdated;
 
 		/// <inheritdoc />
-		public event EventHandler<PumpEventArgs> PumpStatusUpdated;
+		public event EventHandler<PumpEventArgs> PumpUpdated;
 
 		/// <inheritdoc />
 		public async Task StartPump()
@@ -42,6 +43,20 @@ namespace CIAHome.Client.Services
 		{
 			await EnsureConnection();
 			await _connection.InvokeAsync(nameof(StopPump));
+		}
+
+		/// <inheritdoc />
+		public async Task<WatertankStatus> Watertank()
+		{
+			await EnsureConnection();
+			return await _connection.InvokeAsync<WatertankStatus>(nameof(Watertank));
+		}
+
+		/// <inheritdoc />
+		public async Task<PumpStatus> Pump()
+		{
+			await EnsureConnection();
+			return await _connection.InvokeAsync<PumpStatus>(nameof(Pump));
 		}
 
 		private Task EnsureConnection()

@@ -42,6 +42,8 @@ namespace CIAHome.Client
 
 			builder.Services.AddScoped<IThemeProvider, ThemeProvider>();
 			builder.Services.AddScoped<IAsyncRepository<TodoList>, TodoListRepository>();
+			builder.Services.AddScoped<IPumpControlService, PumpControlProxy>();
+			
 
 			await builder.Build().RunAsync();
 		}
