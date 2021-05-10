@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Bunit;
-using CIAHome.Client.Components.Todo;
-using CIAHome.Client.Pages.Todo;
+using CIAHome.Client.Components;
+using CIAHome.Client.Pages;
 using MudBlazor;
 
 namespace CIAHome.Client.Tests.PageModel

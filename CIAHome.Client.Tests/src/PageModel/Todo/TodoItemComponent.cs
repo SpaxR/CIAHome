@@ -1,5 +1,5 @@
 ﻿using Bunit;
-using CIAHome.Client.Components.Todo;
+using CIAHome.Client.Components;
 using CIAHome.Shared.Model;
 
 namespace CIAHome.Client.Tests.PageModel
