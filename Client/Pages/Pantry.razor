@@ -16,7 +16,7 @@
 
     private async Task OnInput(string gtin)
     {
-        _product = await Products.Find(gtin);
+        _product = await Products.Find(gtin) ?? new Product();
     }
 
 

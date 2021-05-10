@@ -57,5 +57,13 @@ namespace CIAHome.Client.Tests
 
 			Assert.NotNull(SUT.CurrentProduct);
 		}
+
+		[Fact]
+		public void Failing_to_load_Product_shows_ProductCard_with_new_Product()
+		{
+			SUT.InputTextField.Find("input").Change("SOME GTIN");
+
+			Assert.NotNull(SUT.CurrentProduct);
+		}
 	}
 }
