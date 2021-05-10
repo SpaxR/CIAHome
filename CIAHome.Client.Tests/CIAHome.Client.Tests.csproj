@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
-
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
@@ -15,28 +14,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Client\CIAHome.Client.csproj" />
 	  <ProjectReference Include="..\Shared\CIAHome.Shared.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Tests" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="CIAHome.Client.Tests.csproj.DotSettings" />
-	  <None Remove="src\PageModel\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Remove="Tests\Repositories\TodoRepositorySpec.cs" />
-	  <Compile Remove="src\PageModel\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Remove="src\PageModel\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Content Remove="src\PageModel\**" />
 	</ItemGroup>
 
 </Project>
