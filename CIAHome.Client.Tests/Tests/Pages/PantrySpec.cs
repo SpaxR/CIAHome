@@ -1,11 +1,10 @@
 using Bunit;
-using CIAHome.Client.Components;
 using CIAHome.Client.Pages;
+using CIAHome.Client.Tests.PageModel;
 using CIAHome.Shared.Interfaces;
 using CIAHome.Shared.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using MudBlazor;
 using Xunit;
 
 namespace CIAHome.Client.Tests
@@ -14,13 +13,13 @@ namespace CIAHome.Client.Tests
 	{
 		private readonly Mock<IAsyncRepository<Product>> _repoMock = new();
 
-		private IRenderedComponent<Pantry> _sut;
+		private PantryPage _sut;
 
-		private IRenderedComponent<Pantry> SUT
+		private PantryPage SUT
 		{
 			get
 			{
-				_sut ??= RenderComponent<Pantry>();
+				_sut ??= new PantryPage(RenderComponent<Pantry>());
 				return _sut;
 			}
 		}
@@ -33,16 +32,14 @@ namespace CIAHome.Client.Tests
 		[Fact]
 		public void contains_TextField()
 		{
-			var field = SUT.FindComponent<MudTextField<string>>();
-
-			Assert.NotNull(field);
+			Assert.NotNull(SUT.InputTextField);
 		}
 
 		[Fact]
 		public void Input_GTIN_loads_Product()
 		{
 			var product   = new Product {GTIN = "SOME GTIN"};
-			var textField = SUT.FindComponent<MudTextField<string>>();
+			var textField = SUT.InputTextField;
 
 			textField.Find("input").Change(product.GTIN);
 
@@ -56,9 +53,9 @@ namespace CIAHome.Client.Tests
 					 .ReturnsAsync(new Product());
 
 
-			SUT.FindComponent<MudTextField<string>>().Find("input").Change("GTIN");
+			SUT.InputTextField.Find("input").Change("SOME GTIN");
 
-			Assert.NotNull(SUT.FindComponent<ProductCard>());
+			Assert.NotNull(SUT.CurrentProduct);
 		}
 	}
 }
