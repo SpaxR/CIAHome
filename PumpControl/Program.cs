@@ -12,8 +12,10 @@ namespace PumpControl
 
 		private static IHostBuilder CreateHostBuilder(string[] args) =>
 			Host.CreateDefaultBuilder(args)
-				.ConfigureServices((hostContext, services) =>
+				.ConfigureServices((_, services) =>
 				{
+					services.AddSingleton<DataProvider>();
+					services.AddSingleton<WatertankSensor>();
 					services.AddHostedService<WaterMonitor>();
 				});
 	}
