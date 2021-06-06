@@ -1,0 +1,15 @@
+﻿@inject NavigationManager Navigation
+
+<LoginForm OnSuccess="@(() => Navigation.NavigateTo(_targetUrl))"/>
+
+@code {
+
+    private string _targetUrl;
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        _targetUrl = Navigation.Uri;
+    }
+
+}

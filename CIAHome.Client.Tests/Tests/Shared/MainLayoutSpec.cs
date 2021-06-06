@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Bunit;
+using Bunit.TestDoubles;
 using CIAHome.Client.Services;
 using CIAHome.Client.Shared;
 using Microsoft.AspNetCore.Components.Routing;
@@ -15,21 +16,25 @@ namespace CIAHome.Client.Tests
 	public class MainLayoutSpec : TestContext
 	{
 		private          IRenderedComponent<MainLayout> _sut;
-		private readonly Mock<IThemeProvider>           _themeProviderMock = new();
+		private readonly Mock<IThemeProvider>           _themeProviderMock  = new();
+		private readonly Mock<IAuthenticationService>   _authenticationMock = new();
 
 
 		public MainLayoutSpec()
 		{
 			JSInterop.Mode = JSRuntimeMode.Loose;
-			
+
+			this.AddTestAuthorization();
+
 			Services.AddMudServices();
 			Services.AddMudBlazorDialog();
 			Services.AddMudBlazorSnackbar();
-			
+
 			Services.AddScoped(_ => Mock.Of<INavigationInterception>());
 			Services.AddScoped(_ => _themeProviderMock.Object);
+			Services.AddScoped(_ => _authenticationMock.Object);
 		}
-		
+
 		private void CreateSUT()
 		{
 			_sut = RenderComponent<MainLayout>();
@@ -90,7 +95,7 @@ namespace CIAHome.Client.Tests
 
 			Assert.Equal("/", title?.Instance.Link);
 		}
-		
+
 		[Fact]
 		public void sets_MudThemeProvider_to_current_theme()
 		{
@@ -107,7 +112,7 @@ namespace CIAHome.Client.Tests
 		public void ThemeChanged_triggers_Render()
 		{
 			CreateSUT();
-			
+
 			_sut.InvokeAsync(() => _themeProviderMock.Raise(tp => tp.ThemeChanged += null, EventArgs.Empty));
 
 			Assert.Equal(2, _sut.RenderCount);

@@ -1,0 +1,4 @@
+﻿@page "/login"
+@inject NavigationManager Navigation
+
+<LoginForm OnSuccess="@(() => Navigation.NavigateTo("/"))"/>
