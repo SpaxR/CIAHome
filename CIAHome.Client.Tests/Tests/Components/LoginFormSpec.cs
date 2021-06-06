@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using Bunit;
 using CIAHome.Client.Components;
 using CIAHome.Client.Services;
@@ -30,6 +29,24 @@ namespace CIAHome.Client.Tests
 		{
 			Services.AddScoped(_ => _authMock.Object);
 		}
+
+		private void InputData(LoginModel model)
+		{
+			SUT.FindComponent<MudTextField<string>>(c => c.Instance.Label.Equals("Username"))
+			   .Find("input")
+			   .Input(model.Username);
+
+			SUT.FindComponent<MudTextField<string>>(c => c.Instance.Label.Equals("Password"))
+			   .Find("input")
+			   .Input(model.Password);
+
+			SUT.FindComponent<MudCheckBox<bool>>()
+			   .Find("input")
+			   .Change(model.Remember);
+
+			SUT.WaitForState(() => SUT.FindComponent<MudForm>().Instance.IsValid);
+		}
+
 
 		[Fact]
 		public void contains_form()
@@ -102,15 +119,13 @@ namespace CIAHome.Client.Tests
 		[Fact]
 		public void Click_button_calls_Login()
 		{
-			var inputs = SUT.FindComponents<MudTextField<string>>();
-			var form   = SUT.FindComponent<MudForm>();
-			var button = SUT.FindComponent<MudButton>().Find("button");
+			InputData(new LoginModel
+			{
+				Username = "USERNAME",
+				Password = "PASSWORD"
+			});
 
-			Parallel.ForEach(inputs, input => input.Find("input").Change("SOME TEXT"));
-			form.Instance.Validate();
-			SUT.Render();
-
-			button.Click();
+			SUT.FindComponent<MudButton>().Find("button").Click();
 
 			_authMock.Verify(auth => auth.Login(It.IsAny<LoginModel>()));
 		}
@@ -130,15 +145,14 @@ namespace CIAHome.Client.Tests
 		public void Successful_Login_triggers_OnSuccess()
 		{
 			bool hasBeenCalled = false;
-			var  inputs        = SUT.FindComponents<MudTextField<string>>();
-			var  button        = SUT.FindComponent<MudButton>();
-			var  form          = SUT.FindComponent<MudForm>();
-			Parallel.ForEach(inputs, input => input.Find("input").Change("SOME TEXT"));
 			SUT.Instance.OnSuccess = EventCallback.Factory.Create(this, () => hasBeenCalled = true);
+			InputData(new LoginModel
+			{
+				Username = "USERNAME",
+				Password = "PASSWORD"
+			});
 
-			form.Instance.Validate();
-			SUT.Render();
-			button.Find("button").Click();
+			SUT.FindComponent<MudButton>().Find("button").Click();
 
 			Assert.True(hasBeenCalled);
 		}
@@ -147,18 +161,15 @@ namespace CIAHome.Client.Tests
 		public void Failing_Login_triggers_OnFailure()
 		{
 			bool hasBeenCalled = false;
-			var  inputs        = SUT.FindComponents<MudTextField<string>>();
-			var  button        = SUT.FindComponent<MudButton>();
-			var  form          = SUT.FindComponent<MudForm>();
-			Parallel.ForEach(inputs, input => input.Find("input").Change("SOME TEXT"));
 			_authMock.Setup(auth => auth.Login(It.IsAny<LoginModel>())).Throws<Exception>();
-
 			SUT.Instance.OnFailure = EventCallback.Factory.Create(this, () => hasBeenCalled = true);
+			InputData(new LoginModel
+			{
+				Username = "USERNAME",
+				Password = "PASSWORD"
+			});
 
-			form.Instance.Validate();
-			SUT.Render();
-			button.Find("button").Click();
-
+			SUT.FindComponent<MudButton>().Find("button").Click();
 
 			Assert.True(hasBeenCalled);
 		}
@@ -167,31 +178,19 @@ namespace CIAHome.Client.Tests
 		public void Login_provides_UserInput_in_model()
 		{
 			LoginModel result = null;
+			_authMock.Setup(auth => auth.Login(It.IsAny<LoginModel>()))
+					 .Callback<LoginModel>(para => result = para);
+
 			var model = new LoginModel
 			{
 				Username = "USERNAME",
 				Password = "PASSWORD",
 				Remember = true
 			};
+			InputData(model);
 
-			_authMock.Setup(auth => auth.Login(It.IsAny<LoginModel>()))
-					 .Callback<LoginModel>(para => result = para);
 
-			var nameInput = SUT.FindComponent<MudTextField<string>>(
-				field => field.Instance.Label.Equals("Username"));
-			var passwordInput = SUT.FindComponent<MudTextField<string>>(
-				field => field.Instance.Label.Equals("Password"));
-			var rememberCheckbox = SUT.FindComponent<MudCheckBox<bool>>();
-			var button           = SUT.FindComponent<MudButton>();
-			var form             = SUT.FindComponent<MudForm>();
-
-			nameInput.Find("input").Change(model.Username);
-			passwordInput.Find("input").Change(model.Password);
-			rememberCheckbox.Find("input").Change(model.Remember);
-			form.Instance.Validate();
-			SUT.Render();
-
-			button.Find("button").Click();
+			SUT.FindComponent<MudButton>().Find("button").Click();
 
 			Assert.Equal(model.Username, result.Username);
 			Assert.Equal(model.Password, result.Password);
