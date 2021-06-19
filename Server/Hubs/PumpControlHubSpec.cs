@@ -47,7 +47,7 @@ namespace CIAHome.Server.Hubs
 				VolumeTotal  = 75
 			};
 
-			await SUT.UpdateWatertank(status);
+			await SUT.UpdateStatus(status);
 			var result = await SUT.WatertankStatus();
 
 			Assert.Equal(status, result);
@@ -61,7 +61,7 @@ namespace CIAHome.Server.Hubs
 				IsRunning = true
 			};
 
-			await SUT.UpdatePump(status);
+			await SUT.UpdateStatus(status);
 			var result = await SUT.PumpStatus();
 
 			Assert.Equal(status, result);

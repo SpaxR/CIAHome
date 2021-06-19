@@ -30,8 +30,8 @@ namespace CIAHome.Client.Tests
 
 		public PumpControlSpec()
 		{
-			_pumpControlMock.Setup(control => control.Watertank()).ReturnsAsync(_watertankStatus);
-			_pumpControlMock.Setup(control => control.Pump()).ReturnsAsync(_pumpStatus);
+			_pumpControlMock.Setup(control => control.WatertankStatus()).ReturnsAsync(_watertankStatus);
+			_pumpControlMock.Setup(control => control.PumpStatus()).ReturnsAsync(_pumpStatus);
 
 			Services.AddScoped(_ => _pumpControlMock.Object);
 		}
@@ -57,8 +57,8 @@ namespace CIAHome.Client.Tests
 		{
 			_ = SUT;
 
-			_pumpControlMock.Verify(control => control.Watertank());
-			_pumpControlMock.Verify(control => control.Pump());
+			_pumpControlMock.Verify(control => control.WatertankStatus());
+			_pumpControlMock.Verify(control => control.PumpStatus());
 		}
 
 		[Fact]

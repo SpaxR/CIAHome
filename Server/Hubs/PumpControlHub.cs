@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using CIAHome.Shared.Interfaces;
 using CIAHome.Shared.Model;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -16,27 +17,30 @@ namespace CIAHome.Server.Hubs
 		{
 			_log = log;
 		}
+		
+		public Task UpdateStatus(IPumpControlUpdate status)
+		{
+			switch (status)
+			{
+				case WatertankStatus watertank:
+					_watertank = watertank;
+					break;
+				case PumpStatus pump:
+					_pump = pump;
+					break;
+			}
 
+			return Task.CompletedTask;
+		}
+		
 		public Task<WatertankStatus> WatertankStatus()
 		{
 			return Task.FromResult(_watertank);
 		}
 
-		public Task UpdateWatertank(WatertankStatus status)
-		{
-			_watertank = status;
-			return Task.CompletedTask;
-		}
-
 		public Task<PumpStatus> PumpStatus()
 		{
 			return Task.FromResult(_pump);
-		}
-
-		public Task UpdatePump(PumpStatus status)
-		{
-			_pump = status;
-			return Task.CompletedTask;
 		}
 	}
 }

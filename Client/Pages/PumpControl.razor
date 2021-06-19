@@ -19,8 +19,8 @@
         };
         PumpControlProxy.PumpUpdated += (_, args) => Pump = args.Status;
 
-        Watertank = await PumpControlProxy.Watertank();
-        Pump = await PumpControlProxy.Pump();
+        Watertank = await PumpControlProxy.WatertankStatus();
+        Pump = await PumpControlProxy.PumpStatus();
     }
 
 

@@ -46,17 +46,17 @@ namespace CIAHome.Client.Services
 		}
 
 		/// <inheritdoc />
-		public async Task<WatertankStatus> Watertank()
+		public async Task<WatertankStatus> WatertankStatus()
 		{
 			await EnsureConnection();
-			return await _connection.InvokeAsync<WatertankStatus>(nameof(Watertank));
+			return await _connection.InvokeAsync<WatertankStatus>(nameof(WatertankStatus));
 		}
 
 		/// <inheritdoc />
-		public async Task<PumpStatus> Pump()
+		public async Task<PumpStatus> PumpStatus()
 		{
 			await EnsureConnection();
-			return await _connection.InvokeAsync<PumpStatus>(nameof(Pump));
+			return await _connection.InvokeAsync<PumpStatus>(nameof(PumpStatus));
 		}
 
 		private Task EnsureConnection()
