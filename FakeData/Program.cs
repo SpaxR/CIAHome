@@ -40,7 +40,7 @@ namespace FakeData
 			while (!token.IsCancellationRequested)
 			{
 				var pump = new PumpStatus {IsRunning = _random.Next() % 2 == 0};
-				await _connection.InvokeAsync(nameof(ProviderHub.UpdatePump), pump, token);
+				await _connection.InvokeAsync(nameof(PumpControlHub.UpdatePump), pump, token);
 				Console.WriteLine($"Pump: {(pump.IsRunning ? "Running" : "Halted")}");
 
 				var tank = new WatertankStatus
@@ -48,7 +48,7 @@ namespace FakeData
 					VolumeFilled = _random.NextDouble() * 100,
 					VolumeTotal  = 100
 				};
-				await _connection.InvokeAsync(nameof(ProviderHub.UpdateWatertank), tank, token);
+				await _connection.InvokeAsync(nameof(PumpControlHub.UpdateWatertank), tank, token);
 				Console.WriteLine($"Watertank: {tank.VolumeFilled} / {tank.VolumeTotal}");
 
 				await Task.Delay(1000, token);

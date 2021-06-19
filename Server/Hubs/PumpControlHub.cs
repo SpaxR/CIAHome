@@ -5,14 +5,14 @@ using Microsoft.Extensions.Logging;
 
 namespace CIAHome.Server.Hubs
 {
-	public class ProviderHub : Hub
+	public class PumpControlHub : Hub
 	{
-		private readonly ILogger<ProviderHub> _log;
+		private readonly ILogger<PumpControlHub> _log;
 
 		private WatertankStatus _watertank;
 		private PumpStatus      _pump;
 
-		public ProviderHub(ILogger<ProviderHub> log)
+		public PumpControlHub(ILogger<PumpControlHub> log)
 		{
 			_log = log;
 		}

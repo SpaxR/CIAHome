@@ -68,7 +68,7 @@ namespace CIAHome.Server
 			app.UseAuthentication();
 			app.UseAuthorization();app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapHub<ProviderHub>("/hubs/pumpcontrol");
+				endpoints.MapHub<PumpControlHub>("/hubs/pumpcontrol");
 				endpoints.MapRazorPages();
 				endpoints.MapControllers();endpoints.MapFallbackToController(CIAPath.ApiRoute, nameof(ApiController.Fallback), "api");
 				endpoints.MapFallbackToFile("index.html");

@@ -8,18 +8,18 @@ namespace CIAHome.Server.Hubs
 {
 	public class ProviderHubSpec
 	{
-		private ProviderHub _sut;
+		private PumpControlHub _sut;
 
-		private ProviderHub SUT
+		private PumpControlHub SUT
 		{
 			get
 			{
-				_sut ??= new ProviderHub(_loggerMock.Object);
+				_sut ??= new PumpControlHub(_loggerMock.Object);
 				return _sut;
 			}
 		}
 
-		private readonly Mock<ILogger<ProviderHub>> _loggerMock = new();
+		private readonly Mock<ILogger<PumpControlHub>> _loggerMock = new();
 
 		[Fact]
 		public async Task WatertankStatus_without_Data_returns_null()
