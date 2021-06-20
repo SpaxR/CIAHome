@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
+using CIAHome.Shared.Interfaces;
 using CIAHome.Shared.Model;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -14,12 +16,20 @@ namespace CIAHome.Server.Hubs
 		{
 			get
 			{
-				_sut ??= new PumpControlHub(_loggerMock.Object);
+				_sut ??= new PumpControlHub(_loggerMock.Object) {Clients = _clientsMock.Object};
 				return _sut;
 			}
 		}
 
-		private readonly Mock<ILogger<PumpControlHub>> _loggerMock = new();
+		private readonly Mock<ILogger<PumpControlHub>>                 _loggerMock   = new();
+		private readonly Mock<IPumpControlCallback>                    _callbackMock = new();
+		private readonly Mock<IHubCallerClients<IPumpControlCallback>> _clientsMock  = new();
+
+		public ProviderHubSpec()
+		{
+			_clientsMock.Setup(clients => clients.All).Returns(_callbackMock.Object);
+			_clientsMock.Setup(clients => clients.Caller).Returns(_callbackMock.Object);
+		}
 
 		[Fact]
 		public async Task WatertankStatus_without_Data_returns_null()
@@ -28,7 +38,6 @@ namespace CIAHome.Server.Hubs
 
 			Assert.Null(status);
 		}
-
 
 		[Fact]
 		public async Task PumpStatus_without_Data_returns_Null()
@@ -66,5 +75,26 @@ namespace CIAHome.Server.Hubs
 
 			Assert.Equal(status, result);
 		}
+
+		[Fact]
+		public async Task Updating_WatertankStatus_notifies_all_Clients()
+		{
+			var status = new WatertankStatus();
+
+			await SUT.UpdateWatertank(status);
+
+			_callbackMock.Verify(cb => cb.UpdateWatertank(status));
+		}
+		
+		[Fact]
+		public async Task Updating_PumpStatus_notifies_all_Clients()
+		{
+			var status = new PumpStatus();
+
+			await SUT.UpdatePump(status);
+
+			_callbackMock.Verify(cb => cb.UpdatePump(status));
+		}
+		
 	}
 }

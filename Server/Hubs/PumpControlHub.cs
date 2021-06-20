@@ -1,11 +1,12 @@
 using System.Threading.Tasks;
+using CIAHome.Shared.Interfaces;
 using CIAHome.Shared.Model;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace CIAHome.Server.Hubs
 {
-	public class PumpControlHub : Hub
+	public class PumpControlHub : Hub<IPumpControlCallback>
 	{
 		private readonly ILogger<PumpControlHub> _log;
 
@@ -25,6 +26,7 @@ namespace CIAHome.Server.Hubs
 		public Task UpdateWatertank(WatertankStatus status)
 		{
 			_watertank = status;
+			Clients.All.UpdateWatertank(status);
 			return Task.CompletedTask;
 		}
 
@@ -36,6 +38,7 @@ namespace CIAHome.Server.Hubs
 		public Task UpdatePump(PumpStatus status)
 		{
 			_pump = status;
+			Clients.All.UpdatePump(status);
 			return Task.CompletedTask;
 		}
 	}

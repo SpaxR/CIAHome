@@ -1,7 +1,10 @@
 ﻿@page "/pumpcontrol"
 @inject IPumpControlService PumpControlProxy
 
-<TankImage FilledPercentage="@((int) (100 / Watertank.VolumeTotal * Watertank.VolumeFilled))"/>
+@if (Watertank != null)
+{
+    <TankImage FilledPercentage="@((int) (100 / Watertank.VolumeTotal * Watertank.VolumeFilled))"/>
+}
 
 @code {
 

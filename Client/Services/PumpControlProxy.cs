@@ -14,15 +14,17 @@ namespace CIAHome.Client.Services
 		private readonly HubConnection _connection;
 
 		public PumpControlProxy()
-		{
-			_connection = new HubConnectionBuilder()
-						  .WithUrl(CIAPaths.PumpControlHub)
-						  .Build();
+			: this(new HubConnectionBuilder()
+				   .WithUrl(CIAPaths.PumpControlHub)
+				   .Build()) { }
 
-			_connection.On<PumpEventArgs>(nameof(PumpUpdated),
-										  args => PumpUpdated?.Invoke(this, args));
-			_connection.On<WatertankEventArgs>(nameof(WatertankUpdated),
-											   args => WatertankUpdated?.Invoke(this, args));
+		public PumpControlProxy(HubConnection connection)
+		{
+			_connection = connection;
+			_connection.On<PumpStatus>(nameof(IPumpControlCallback.UpdatePump),
+									   args => PumpUpdated?.Invoke(this, new PumpEventArgs(args)));
+			_connection.On<WatertankStatus>(nameof(IPumpControlCallback.UpdateWatertank),
+											args => WatertankUpdated?.Invoke(this, new WatertankEventArgs(args)));
 		}
 
 		/// <inheritdoc />
