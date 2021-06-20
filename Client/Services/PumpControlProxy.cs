@@ -4,27 +4,48 @@ using CIAHome.Shared;
 using CIAHome.Shared.EventArgs;
 using CIAHome.Shared.Interfaces;
 using CIAHome.Shared.Model;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging;
 
 namespace CIAHome.Client.Services
 {
 	// Warning: This class is untested!
 	public class PumpControlProxy : IPumpControlService
 	{
-		private readonly HubConnection _connection;
+		private readonly ILogger<PumpControlProxy> _log;
+		private readonly HubConnection             _connection;
 
-		public PumpControlProxy()
-			: this(new HubConnectionBuilder()
-				   .WithUrl(CIAPaths.PumpControlHub)
-				   .Build()) { }
+		public PumpControlProxy(ILogger<PumpControlProxy> log, NavigationManager navigation) : this(log)
+		{
+			_connection = new HubConnectionBuilder()
+						  .WithUrl(navigation.ToAbsoluteUri(CIAPaths.PumpControlHub))
+						  .Build();
 
-		public PumpControlProxy(HubConnection connection)
+			RegisterCallbacks();
+		}
+
+		public PumpControlProxy(ILogger<PumpControlProxy> log, HubConnection connection) : this(log)
 		{
 			_connection = connection;
-			_connection.On<PumpStatus>(nameof(IPumpControlCallback.UpdatePump),
-									   args => PumpUpdated?.Invoke(this, new PumpEventArgs(args)));
-			_connection.On<WatertankStatus>(nameof(IPumpControlCallback.UpdateWatertank),
-											args => WatertankUpdated?.Invoke(this, new WatertankEventArgs(args)));
+			RegisterCallbacks();
+		}
+
+		private PumpControlProxy(ILogger<PumpControlProxy> log)
+		{
+			_log = log;
+			_log.LogInformation("Creating HubProxy");
+		}
+
+		private void RegisterCallbacks()
+		{
+			_connection.On<PumpStatus>(
+				nameof(IPumpControlCallback.UpdatePump),
+				status => PumpUpdated?.Invoke(this, new PumpEventArgs(status)));
+
+			_connection.On<WatertankStatus>(
+				nameof(IPumpControlCallback.UpdateWatertank),
+				status => WatertankUpdated?.Invoke(this, new WatertankEventArgs(status)));
 		}
 
 		/// <inheritdoc />
@@ -63,9 +84,17 @@ namespace CIAHome.Client.Services
 
 		private Task EnsureConnection()
 		{
-			return _connection.State == HubConnectionState.Disconnected
-				? _connection.StartAsync()
-				: Task.CompletedTask;
+			if (_connection.State == HubConnectionState.Disconnected)
+			{
+				_log.LogInformation("Hub not connected, connecting...");
+				return _connection.StartAsync();
+			}
+
+			return Task.CompletedTask;
+
+			// return _connection.State == HubConnectionState.Disconnected
+			// 	? _connection.StartAsync()
+			// 	: Task.CompletedTask;
 		}
 	}
 }
