@@ -5,10 +5,13 @@
 {
     <TankImage FilledPercentage="@((int) (100 / Watertank.VolumeTotal * Watertank.VolumeFilled))"/>
 }
+@if (Pump != null)
+{
+    <PumpImage IsRunning="@Pump.IsRunning"/>
+}
 
 @code {
-
-
+    
     private WatertankStatus Watertank;
     private PumpStatus Pump;
 
@@ -20,7 +23,11 @@
             Watertank = args.Status;
             StateHasChanged();
         };
-        PumpControlProxy.PumpUpdated += (_, args) => Pump = args.Status;
+        PumpControlProxy.PumpUpdated += (_, args) =>
+        {
+            Pump = args.Status;
+            StateHasChanged();
+        };
 
         Watertank = await PumpControlProxy.WatertankStatus();
         Pump = await PumpControlProxy.PumpStatus();

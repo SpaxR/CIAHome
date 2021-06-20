@@ -14,7 +14,7 @@ namespace CIAHome.Client.Tests
 	public class PumpControlSpec : TestContext
 	{
 		private readonly Mock<IPumpControlService> _pumpControlMock = new();
-		private readonly WatertankStatus           _watertankStatus = new(){VolumeTotal = 100};
+		private readonly WatertankStatus           _watertankStatus = new() {VolumeTotal = 100};
 		private readonly PumpStatus                _pumpStatus      = new();
 
 		private IRenderedComponent<PumpControl> _sut;
@@ -41,7 +41,8 @@ namespace CIAHome.Client.Tests
 		{
 			_ = SUT;
 
-			_pumpControlMock.VerifyAdd(service => service.WatertankUpdated += It.IsAny<EventHandler<WatertankEventArgs>>());
+			_pumpControlMock.VerifyAdd(service => service.WatertankUpdated +=
+										   It.IsAny<EventHandler<WatertankEventArgs>>());
 		}
 
 		[Fact]
@@ -73,7 +74,7 @@ namespace CIAHome.Client.Tests
 		public void sets_TankImage_to_current_status_of_Watertank()
 		{
 			_watertankStatus.VolumeFilled = 50;
-			
+
 			var tankImage = SUT.FindComponent<TankImage>();
 
 			Assert.Equal(50, tankImage.Instance.FilledPercentage);
@@ -96,7 +97,31 @@ namespace CIAHome.Client.Tests
 			});
 
 			Assert.Equal(20, tankImage.Instance.FilledPercentage);
+		}
 
+		[Fact]
+		public void contains_PumpImage()
+		{
+			var image = SUT.FindComponent<PumpImage>();
+
+			Assert.NotNull(image);
+		}
+
+		[Fact]
+		public void Updating_Pump_updates_PumpImage()
+		{
+			var pumpImage = SUT.FindComponent<PumpImage>();
+
+			SUT.InvokeAsync(() =>
+			{
+				_pumpControlMock.Raise(control => control.PumpUpdated += null,
+									   new PumpEventArgs(new PumpStatus
+									   {
+										   IsRunning = true
+									   }));
+			});
+
+			Assert.Equal(true, pumpImage.Instance.IsRunning);
 		}
 	}
 }
