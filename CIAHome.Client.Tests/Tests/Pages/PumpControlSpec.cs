@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Bunit;
 using CIAHome.Client.Components;
 using CIAHome.Client.Pages;
@@ -7,6 +8,7 @@ using CIAHome.Shared.Interfaces;
 using CIAHome.Shared.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using MudBlazor.Services;
 using Xunit;
 
 namespace CIAHome.Client.Tests
@@ -33,6 +35,7 @@ namespace CIAHome.Client.Tests
 			_pumpControlMock.Setup(control => control.WatertankStatus()).ReturnsAsync(_watertankStatus);
 			_pumpControlMock.Setup(control => control.PumpStatus()).ReturnsAsync(_pumpStatus);
 
+			Services.AddMudServices();
 			Services.AddScoped(_ => _pumpControlMock.Object);
 		}
 
@@ -56,10 +59,13 @@ namespace CIAHome.Client.Tests
 		[Fact]
 		public void OnInitialized_fetches_initial_Status()
 		{
-			_ = SUT;
+			SUT.Render();
 
-			_pumpControlMock.Verify(control => control.WatertankStatus());
-			_pumpControlMock.Verify(control => control.PumpStatus());
+			SUT.WaitForAssertion(() =>
+			{
+				_pumpControlMock.Verify(control => control.WatertankStatus());
+				_pumpControlMock.Verify(control => control.PumpStatus());
+			});
 		}
 
 		[Fact]
@@ -100,6 +106,16 @@ namespace CIAHome.Client.Tests
 		}
 
 		[Fact]
+		public void Exception_while_loading_WatertankStatus_sets_Overlay_to_Error()
+		{
+			_pumpControlMock.Setup(pcm => pcm.WatertankStatus()).ThrowsAsync(new Exception());
+
+			var overlay = SUT.FindComponent<StatusOverlay>();
+
+			Assert.Equal(StatusOverlay.OverlayStatus.Error, overlay.Instance.Status);
+		}
+		
+		[Fact]
 		public void contains_PumpImage()
 		{
 			var image = SUT.FindComponent<PumpImage>();
@@ -108,20 +124,25 @@ namespace CIAHome.Client.Tests
 		}
 
 		[Fact]
-		public void Updating_Pump_updates_PumpImage()
+		public async Task Updating_Pump_updates_PumpImage()
 		{
-			var pumpImage = SUT.FindComponent<PumpImage>();
+			var statusEventArgs = new PumpEventArgs(new PumpStatus {IsRunning = true});
+			var pumpImage       = SUT.FindComponent<PumpImage>();
 
-			SUT.InvokeAsync(() =>
-			{
-				_pumpControlMock.Raise(control => control.PumpUpdated += null,
-									   new PumpEventArgs(new PumpStatus
-									   {
-										   IsRunning = true
-									   }));
-			});
+			await SUT.InvokeAsync(() => _pumpControlMock.Raise(pc => pc.PumpUpdated += null, statusEventArgs));
 
 			Assert.Equal(true, pumpImage.Instance.IsRunning);
 		}
+		
+		[Fact]
+		public void Exception_while_loading_PumpStatus_sets_Overlay_to_Error()
+		{
+			_pumpControlMock.Setup(pcm => pcm.PumpStatus()).ThrowsAsync(new Exception());
+
+			var overlay = SUT.FindComponents<StatusOverlay>()[1];
+
+			Assert.Equal(StatusOverlay.OverlayStatus.Error, overlay.Instance.Status);
+		}
+
 	}
 }

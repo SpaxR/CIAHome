@@ -1,37 +1,97 @@
 ﻿@page "/pumpcontrol"
+@using static Components.StatusOverlay
 @inject IPumpControlService PumpControlProxy
 
-@if (Watertank != null)
-{
-    <TankImage FilledPercentage="@((int) (100 / Watertank.VolumeTotal * Watertank.VolumeFilled))"/>
-}
-@if (Pump != null)
-{
-    <PumpImage IsRunning="@Pump.IsRunning"/>
-}
+<MudGrid>
+    <MudItem xs="6">
+        <StatusOverlay Status="WatertankLoadingStatus">
+            <TankImage FilledPercentage="@((int) (100 / Watertank.VolumeTotal * Watertank.VolumeFilled))"/>
+        </StatusOverlay>
+    </MudItem>
+    <MudItem xs="6">
+        <MudText Typo="Typo.body1">Status: @WatertankLoadingStatus</MudText>
+        <MudText Typo="Typo.body1">Volumen Gesamt: @Watertank.VolumeTotal Liter</MudText>
+        <MudText Typo="Typo.body1">Volumen Gefüllt: @Watertank.VolumeFilled Liter</MudText>
+    </MudItem>
+
+    <MudItem xs="6">
+        <StatusOverlay Status="PumpLoadingStatus">
+            <PumpImage IsRunning="@(Pump.IsRunning)"/>
+        </StatusOverlay>
+    </MudItem>
+
+    <MudItem xs="6">
+        <MudText Typo="Typo.body1">Status: @PumpLoadingStatus</MudText>
+        <MudText>Pumpe: @(Pump.IsRunning ? "An" : "Aus")</MudText>
+    </MudItem>
+
+</MudGrid>
 
 @code {
-    
-    private WatertankStatus Watertank;
-    private PumpStatus Pump;
+
+    private WatertankStatus _watertank;
+    private WatertankStatus Watertank => _watertank ?? WatertankStatus.Unavailable;
+
+    private PumpStatus _pump;
+    private PumpStatus Pump => _pump ?? PumpStatus.Unavailable;
+
+    private OverlayStatus _watertankLoadingStatus;
+    private OverlayStatus WatertankLoadingStatus => _watertank == null ? OverlayStatus.Unknown : _watertankLoadingStatus;
+
+    private OverlayStatus _pumpLoadingStatus;
+    private OverlayStatus PumpLoadingStatus => _pump == null ? OverlayStatus.Unknown : _pumpLoadingStatus;
+
 
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
         PumpControlProxy.WatertankUpdated += (_, args) =>
         {
-            Watertank = args.Status;
+            _watertank = args.Status;
             StateHasChanged();
         };
         PumpControlProxy.PumpUpdated += (_, args) =>
         {
-            Pump = args.Status;
+            _pump = args.Status;
             StateHasChanged();
         };
 
-        Watertank = await PumpControlProxy.WatertankStatus();
-        Pump = await PumpControlProxy.PumpStatus();
+        await Task.WhenAll(
+            UpdateWatertankStatus(),
+            UpdatePumpStatus());
     }
+
+    private async Task UpdateWatertankStatus()
+    {
+        _watertankLoadingStatus = OverlayStatus.Loading;
+        try
+        {
+            _watertank = await PumpControlProxy.WatertankStatus();
+            _watertankLoadingStatus = OverlayStatus.Content;
+        }
+        catch (Exception)
+        {
+            _watertank = WatertankStatus.Unavailable;
+            _watertankLoadingStatus = OverlayStatus.Error;
+        }
+    }
+
+    private async Task UpdatePumpStatus()
+    {
+        _pumpLoadingStatus = OverlayStatus.Loading;
+
+        try
+        {
+            _pump = await PumpControlProxy.PumpStatus();
+            _pumpLoadingStatus = OverlayStatus.Content;
+        }
+        catch (Exception)
+        {
+            _pump = PumpStatus.Unavailable;
+            _pumpLoadingStatus = OverlayStatus.Error;
+        }
+    }
+
 
 
 

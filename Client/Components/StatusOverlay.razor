@@ -1,15 +1,17 @@
-<MudItem Style="position: relative;">
+<MudPaper Style="position: relative;" Elevation="0">
 
     @ChildContent
 
-    <MudOverlay Absolute="true"
-                DarkBackground="@(Background == OverlayBackground.Dark || Background == OverlayBackground.Auto && Status == OverlayStatus.Error)"
-                LightBackground="@(Background == OverlayBackground.Light || Background == OverlayBackground.Auto && Status == OverlayStatus.Loading)"
-                Visible="@(Status != OverlayStatus.Content)">
+    <MudOverlay Absolute="true" DarkBackground="IsDarkOverlay()" LightBackground="IsLightOverlay()" Visible="@(Status != OverlayStatus.Content)">
 
         @if (Status == OverlayStatus.Loading)
         {
             <MudProgressCircular Color="Color.Secondary" Indeterminate="true"/>
+        }
+
+        @if (Status == OverlayStatus.Unknown)
+        {
+            <MudIcon Icon="@(Icons.Filled.Help)" Color="Color.Info" Size="Size.Large"/>
         }
 
         @if (Status == OverlayStatus.Error)
@@ -18,7 +20,7 @@
         }
 
     </MudOverlay>
-</MudItem>
+</MudPaper>
 
 
 @code {
@@ -26,6 +28,7 @@
     public enum OverlayStatus
     {
         Content,
+        Unknown,
         Loading,
         Error
     }
@@ -46,5 +49,34 @@
 
     [Parameter]
     public OverlayBackground Background { get; set; } = OverlayBackground.Auto;
+
+    private bool IsDarkOverlay()
+    {
+        if (Background == OverlayBackground.Dark)
+        {
+            return true;
+        }
+
+        if (Background == OverlayBackground.Auto)
+        {
+            return Status == OverlayStatus.Error;
+        }
+        return false;
+    }
+
+    private bool IsLightOverlay()
+    {
+        if (Background == OverlayBackground.Light)
+        {
+            return true;
+        }
+
+        if (Background == OverlayBackground.Auto)
+        {
+            return Status is OverlayStatus.Loading or OverlayStatus.Unknown;
+        }
+
+        return false;
+    }
 
 }
