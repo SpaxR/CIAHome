@@ -42,11 +42,13 @@ namespace CIAHome.Client.Tests
 		public void changing_Status_shows_Water_image(bool isRunning)
 		{
 			_isRunning = isRunning;
-			
-			var    image = SUT.Find("img");
-			string style = image.GetAttribute("style");
 
-			Assert.Contains($"{(isRunning ? 100 : 0)}% 0 0 0", style);
+			var    image          = SUT.Find("img");
+			string style          = image.GetAttribute("style");
+			int    maskPercentage = isRunning ? 0 : 100;
+
+
+			Assert.Contains($"{maskPercentage}% 0 0 0", style);
 		}
 	}
 }
