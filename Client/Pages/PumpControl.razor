@@ -3,25 +3,20 @@
 @inject IPumpControlService PumpControlProxy
 
 <MudGrid>
-    <MudItem xs="6">
+    <MudItem xs="12">
         <StatusOverlay Status="WatertankLoadingStatus">
-            <TankImage FilledPercentage="@((int) (100 / Watertank.VolumeTotal * Watertank.VolumeFilled))"/>
+            <TankImage Width="200px;" FilledPercentage="@((int) (100 / Watertank.VolumeTotal * Watertank.VolumeFilled))"/>
         </StatusOverlay>
-    </MudItem>
-    <MudItem xs="6">
-        <MudText Typo="Typo.body1">Status: @WatertankLoadingStatus</MudText>
+
         <MudText Typo="Typo.body1">Volumen Gesamt: @Watertank.VolumeTotal Liter</MudText>
         <MudText Typo="Typo.body1">Volumen Gefüllt: @Watertank.VolumeFilled Liter</MudText>
     </MudItem>
 
-    <MudItem xs="6">
+    <MudItem>
         <StatusOverlay Status="PumpLoadingStatus">
-            <PumpImage IsRunning="@(Pump.IsRunning)"/>
+            <PumpImage Height="200px" IsRunning="@(Pump.IsRunning)"/>
         </StatusOverlay>
-    </MudItem>
 
-    <MudItem xs="6">
-        <MudText Typo="Typo.body1">Status: @PumpLoadingStatus</MudText>
         <MudText>Pumpe: @(Pump.IsRunning ? "An" : "Aus")</MudText>
     </MudItem>
 

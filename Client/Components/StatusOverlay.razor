@@ -1,4 +1,8 @@
-<MudPaper Style="position: relative;" Elevation="0">
+@using System.Reflection.Metadata
+@using MudBlazor.Utilities
+@inherits MudComponentBase;
+
+<div @attributes="UserAttributes" class="@Class" style="@Stylename">
 
     @ChildContent
 
@@ -20,10 +24,14 @@
         }
 
     </MudOverlay>
-</MudPaper>
-
+</div>
 
 @code {
+
+    protected string Stylename =>
+        new StyleBuilder("position", "relative")
+            .AddStyle(Style)
+            .Build();
 
     public enum OverlayStatus
     {
@@ -49,6 +57,7 @@
 
     [Parameter]
     public OverlayBackground Background { get; set; } = OverlayBackground.Auto;
+
 
     private bool IsDarkOverlay()
     {
