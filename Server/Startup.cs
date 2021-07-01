@@ -8,6 +8,7 @@ using CIAHome.Server.Data;
 using CIAHome.Shared;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using CIAHome.Server.Hubs;
 
 namespace CIAHome.Server
 {
@@ -38,6 +39,7 @@ namespace CIAHome.Server
 				options.Password.RequiredLength         = 1;
 			});
 
+			services.AddSignalR();
 			services.AddControllersWithViews();
 			services.AddRazorPages();
 		}
@@ -64,13 +66,11 @@ namespace CIAHome.Server
 			app.UseRouting();
 
 			app.UseAuthentication();
-			app.UseAuthorization();
-
-			app.UseEndpoints(endpoints =>
+			app.UseAuthorization();app.UseEndpoints(endpoints =>
 			{
+				endpoints.MapHub<PumpControlHub>("/hubs/pumpcontrol");
 				endpoints.MapRazorPages();
-				endpoints.MapControllers();
-				endpoints.MapFallbackToController(CIAPath.ApiRoute, nameof(ApiController.Fallback), "api");
+				endpoints.MapControllers();endpoints.MapFallbackToController(CIAPath.ApiRoute, nameof(ApiController.Fallback), "api");
 				endpoints.MapFallbackToFile("index.html");
 			});
 		}
