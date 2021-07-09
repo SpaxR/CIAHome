@@ -2,8 +2,8 @@
 using AngleSharp.Css.Dom;
 using Bunit;
 using CIAHome.Client.Components.Todo;
+using CIAHome.Shared.Entities;
 using CIAHome.Shared.Interfaces;
-using CIAHome.Shared.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;

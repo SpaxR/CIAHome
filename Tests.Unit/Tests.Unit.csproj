@@ -27,6 +27,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Client\CIAHome.Client.csproj" />
+	  <ProjectReference Include="..\Server\CIAHome.Server.csproj" />
 	</ItemGroup>
 
 </Project>

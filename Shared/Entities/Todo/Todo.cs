@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CIAHome.Shared.Model
+namespace CIAHome.Shared.Entities
 {
 	public class Todo
 	{

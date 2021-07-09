@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using CIAHome.Server.Hubs;
 using CIAHome.Shared.Interfaces;
 using CIAHome.Shared.Model;
 using Microsoft.AspNetCore.SignalR;
@@ -6,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
-namespace CIAHome.Server.Hubs
+namespace Tests.Unit
 {
 	public class ProviderHubSpec
 	{
@@ -95,6 +96,6 @@ namespace CIAHome.Server.Hubs
 
 			_callbackMock.Verify(cb => cb.UpdatePump(status));
 		}
-		
+
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Bunit;
 using CIAHome.Client.Components.Todo;
-using CIAHome.Shared.Model;
+using CIAHome.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;

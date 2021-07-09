@@ -1,4 +1,5 @@
-﻿<MudListItem>
+﻿@using CIAHome.Shared.Entities
+<MudListItem>
     @if (_isEditing)
     {
         <MudInput @bind-Value="Todo.Text"/>

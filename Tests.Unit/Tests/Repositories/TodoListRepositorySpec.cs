@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using CIAHome.Client.Repositories;
-using CIAHome.Shared.Model;
+using CIAHome.Shared.Entities;
 using Moq;
 using Xunit;
 

@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using CIAHome.Shared.Entities;
 using Xunit;
 
-namespace CIAHome.Shared.Model
+namespace Tests.Unit
 {
-	public class TodoSpec
+	public class TodoListSpec
 	{
-		private Todo _sut;
+		private readonly TodoList _sut = new();
 		
-		public TodoSpec()
-		{
-			_sut = new Todo();
-		}
 		
 		[Fact]
 		public void Id_is_not_null_or_whitespace()
@@ -24,8 +20,12 @@ namespace CIAHome.Shared.Model
 		[Fact]
 		public void Id_is_unique()
 		{
-			IList<string> ids = new List<string>();
-			Parallel.For(0, 10, _ => ids.Add(new Todo().Id));
+			List<string> ids = new List<string>
+			{
+				new TodoList().Id,
+				new TodoList().Id,
+				new TodoList().Id,
+			};
 
 			Assert.Equal(ids, ids.Distinct());
 		}
@@ -34,14 +34,21 @@ namespace CIAHome.Shared.Model
 		public void Id_is_GUID()
 		{
 			bool result = Guid.TryParse(_sut.Id, out _);
+			
 			Assert.True(result);
+		}
+		
+		[Fact]
+		public void Text_is_not_null_or_whitespace()
+		{
+			Assert.NotEmpty(_sut.Text);
 		}
 
 		[Fact]
-		public void Text_is_not_null()
+		public void Todos_is_not_null()
 		{
-			Assert.NotNull(_sut.Text);
+			Assert.NotNull(_sut.Todos);
 		}
-
+		
 	}
 }

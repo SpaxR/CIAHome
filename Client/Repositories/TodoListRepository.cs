@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
+using CIAHome.Shared.Entities;
 using CIAHome.Shared.Interfaces;
-using CIAHome.Shared.Model;
 
 namespace CIAHome.Client.Repositories
 {

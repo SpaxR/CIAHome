@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CIAHome.Server.Data
 {
-	public class CIADbContext : IdentityDbContext<CIAUser>
+	public class CIAContext : IdentityDbContext<CIAUser>
 	{
 		/// <inheritdoc />
-		public CIADbContext(DbContextOptions options) : base(options) { }
+		public CIAContext(DbContextOptions options) : base(options) { }
 	}
 }

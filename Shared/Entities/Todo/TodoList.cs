@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CIAHome.Shared.Model
+namespace CIAHome.Shared.Entities
 {
 	public class TodoList
 	{
