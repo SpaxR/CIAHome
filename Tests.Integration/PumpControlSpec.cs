@@ -77,7 +77,7 @@ namespace Tests.Integration
 			_testConsole.WriteLine("Assert -  Watertank gets updated");
 
 			pumpControlComp.WaitForAssertion(
-				() => Assert.Equal(true, pumpControlComp.FindComponent<PumpImage>().Instance.IsRunning),
+				() => Assert.True(pumpControlComp.FindComponent<PumpImage>().Instance.IsRunning),
 				TimeSpan.FromSeconds(3));
 			_testConsole.WriteLine("Assert -  Pump gets updated");
 		}
