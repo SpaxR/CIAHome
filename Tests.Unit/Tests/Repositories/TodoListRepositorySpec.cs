@@ -3,11 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using CIAHome.Client.Repositories;
-using CIAHome.Shared.Entities;
+using CIAHome.Shared.Models;
 using Moq;
 using Xunit;
 
-namespace Tests.Unit
+namespace Tests.Unit.Repositories
 {
 	public class TodoListRepositorySpec
 	{
@@ -59,7 +59,7 @@ namespace Tests.Unit
 		[Fact]
 		public async Task Find_returns_TodoList_matching_Predicate()
 		{
-			var list = new TodoList();
+			var list = new TodoList { Id = "SOME ID" };
 			SetupLists(list);
 
 			var result = await _sut.Find(t => t.Id.Equals(list.Id));
@@ -81,7 +81,7 @@ namespace Tests.Unit
 		[Fact]
 		public async Task Find_Id_returns_TodoList_with_specified_Id()
 		{
-			var list = new TodoList();
+			var list = new TodoList { Id = "SOME ID" };
 			SetupLists(list);
 
 			var result = await _sut.Find(list.Id);
@@ -93,8 +93,10 @@ namespace Tests.Unit
 		[Fact]
 		public async Task Find_Id_withNull_returns_uncategorized_TodoList()
 		{
-			var list = new TodoList { Id = null, Todos = { new Todo() } };
-			_storageMock.Setup(storage => storage.GetItemAsync<TodoList>(nameof(Todo))).ReturnsAsync(list);
+			var list = new TodoList { Id = null };
+			list.AddTodo(new TodoItem());
+
+			_storageMock.Setup(storage => storage.GetItemAsync<TodoList>(nameof(TodoItem))).ReturnsAsync(list);
 
 			var result = await _sut.Find((string)null);
 
@@ -104,7 +106,7 @@ namespace Tests.Unit
 		[Fact]
 		public async Task All_returns_all_lists()
 		{
-			var lists = new TodoList[] { new(), new(), new() };
+			var lists = new TodoList[] { new() { Id = "1" }, new() { Id = "2" }, new() { Id = "3" } };
 			SetupLists(lists);
 
 			var result = await _sut.All();

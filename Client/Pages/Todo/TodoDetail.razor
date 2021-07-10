@@ -1,5 +1,4 @@
 ﻿@page "/todos/{id}"
-@using CIAHome.Shared.Entities
 @inject IAsyncRepository<TodoList> TodoRepository
 @inject NavigationManager Navigation
 
@@ -27,7 +26,7 @@ else
     <MudList>
         @foreach (var todo in _list.Todos)
         {
-            <TodoItem Todo="@todo"
+            <TodoListItem Todo="@todo"
                       OnUpdate="@(() => TodoRepository.Update(_list))"
                       OnDelete="@(() => DeleteTodo(todo))"/>
         }
@@ -56,13 +55,13 @@ else
 
     private async Task AddTodo()
     {
-        _list.Todos.Add(new Todo());
+        _list.AddTodo(new TodoItem());
         await TodoRepository.Update(_list);
     }
 
-    private async Task DeleteTodo(Todo todo)
+    private async Task DeleteTodo(TodoItem todo)
     {
-        _list.Todos.Remove(todo);
+        _list.RemoveTodo(todo);
         await TodoRepository.Update(_list);
     }
 

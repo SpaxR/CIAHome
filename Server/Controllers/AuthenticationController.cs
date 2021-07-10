@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using CIAHome.Server.Data;
+using CIA.Infrastructure;
 using CIAHome.Shared;
 using CIAHome.Shared.Models;
 using Microsoft.AspNetCore.Identity;

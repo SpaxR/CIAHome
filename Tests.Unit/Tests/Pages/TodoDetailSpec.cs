@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AngleSharp.Dom;
 using Bunit;
 using CIAHome.Client.Components.Todo;
 using CIAHome.Client.Pages.Todo;
-using CIAHome.Shared.Entities;
 using CIAHome.Shared.Interfaces;
+using CIAHome.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +13,7 @@ using Moq;
 using MudBlazor;
 using Xunit;
 
-namespace Tests.Unit
+namespace Tests.Unit.Pages
 {
 	public class TodoDetailSpec : TestContext
 	{
@@ -43,11 +44,11 @@ namespace Tests.Unit
 		[Fact]
 		public void WithId_loads_Todos_of_List()
 		{
-			_list.Todos.Add(new Todo());
+			_list.AddTodo(new TodoItem());
 
-			var todoItems = SUT.FindComponents<TodoItem>();
+			var todoItems = SUT.FindComponents<TodoListItem>();
 
-			Assert.Equal(_list.Todos.Count, todoItems.Count);
+			Assert.Equal(_list.Todos.Count(), todoItems.Count);
 		}
 
 		[Fact]
@@ -61,6 +62,8 @@ namespace Tests.Unit
 		[Fact]
 		public void contains_Text_of_list()
 		{
+			_list.Text = "SOME TEXT";
+
 			var text = SUT.FindComponent<MudText>();
 
 			Assert.Contains(_list.Text, text.Markup);
@@ -93,31 +96,31 @@ namespace Tests.Unit
 		{
 			Assert.Empty(SUT.FindComponents<MudInput<string>>());
 		}
-		
+
 		[Fact]
 		public void Adding_Todo_adds_TodoItem()
 		{
 			SUT.FindComponent<MudButton>().Find("button").Click();
 
-			Assert.Equal(1, SUT.FindComponents<TodoItem>().Count);
+			Assert.Equal(1, SUT.FindComponents<TodoListItem>().Count);
 		}
 
 		[Fact]
 		public async Task Deleting_Todo_removes_TodoItem()
 		{
-			_list.Todos.Add(new Todo());
+			_list.AddTodo(new TodoItem());
 
-			await SUT.InvokeAsync(SUT.FindComponent<TodoItem>().Instance.OnDelete.InvokeAsync);
+			await SUT.InvokeAsync(SUT.FindComponent<TodoListItem>().Instance.OnDelete.InvokeAsync);
 
-			Assert.Empty(SUT.FindComponents<TodoItem>());
+			Assert.Empty(SUT.FindComponents<TodoListItem>());
 		}
 
 		[Fact]
 		public async Task Deleting_Todo_removes_Todo_from_List()
 		{
-			_list.Todos.Add(new Todo());
+			_list.AddTodo(new TodoItem());
 
-			await SUT.InvokeAsync(SUT.FindComponent<TodoItem>().Instance.OnDelete.InvokeAsync);
+			await SUT.InvokeAsync(SUT.FindComponent<TodoListItem>().Instance.OnDelete.InvokeAsync);
 
 			Assert.Empty(_list.Todos);
 		}
@@ -125,9 +128,9 @@ namespace Tests.Unit
 		[Fact]
 		public async Task Deleting_Todo_updates_List_in_Repository()
 		{
-			_list.Todos.Add(new Todo());
+			_list.AddTodo(new TodoItem());
 
-			await SUT.InvokeAsync(SUT.FindComponent<TodoItem>().Instance.OnDelete.InvokeAsync);
+			await SUT.InvokeAsync(SUT.FindComponent<TodoListItem>().Instance.OnDelete.InvokeAsync);
 
 			_repositoryMock.Verify(repository => repository.Update(_list));
 		}
@@ -135,9 +138,9 @@ namespace Tests.Unit
 		[Fact]
 		public void Invoking_TodoItem_OnDelete_deletes_Todo()
 		{
-			_list.Todos.Add(new Todo());
+			_list.AddTodo(new TodoItem());
 
-			SUT.InvokeAsync(SUT.FindComponent<TodoItem>().Instance.OnDelete.InvokeAsync);
+			SUT.InvokeAsync(SUT.FindComponent<TodoListItem>().Instance.OnDelete.InvokeAsync);
 
 			Assert.Empty(_list.Todos);
 			_repositoryMock.Verify(repository => repository.Update(_list));
@@ -146,17 +149,17 @@ namespace Tests.Unit
 		[Fact]
 		public void contains_TodoItem_foreach_Todo_in_List()
 		{
-			_list.Todos.Add(new Todo());
+			_list.AddTodo(new TodoItem());
 
-			Assert.Equal(1, SUT.FindComponents<TodoItem>().Count);
+			Assert.Equal(1, SUT.FindComponents<TodoListItem>().Count);
 		}
 
 		[Fact]
 		public void Invoking_TodoItem_OnUpdate_updates_List_in_Repository()
 		{
-			_list.Todos.Add(new Todo());
+			_list.AddTodo(new TodoItem());
 
-			SUT.InvokeAsync(SUT.FindComponent<TodoItem>().Instance.OnUpdate.InvokeAsync);
+			SUT.InvokeAsync(SUT.FindComponent<TodoListItem>().Instance.OnUpdate.InvokeAsync);
 
 			_repositoryMock.Verify(repository => repository.Update(_list));
 		}
@@ -220,18 +223,22 @@ namespace Tests.Unit
 		public void Editing_Text_does_not_show_Text()
 		{
 			SUT.FindIconButton(Icons.Sharp.Create).Find("button").Click();
-			
+
 			Assert.Empty(SUT.FindComponents<MudText>());
 		}
 
 		[Fact]
 		public void Confirming_Text_switches_back_to_Text()
 		{
+			_list.Text = "SOME TEXT";
+
 			SUT.FindIconButton(Icons.Sharp.Create).Find("button").Click();
 			SUT.FindIconButton(Icons.Sharp.Check).Find("button").Click();
-			
-			contains_Text_of_list();
-			does_not_contain_Input_if_not_editing();
+
+			var text = SUT.FindComponent<MudText>();
+
+			Assert.Contains(_list.Text, text.Markup);
+			Assert.Empty(SUT.FindComponents<MudInput<string>>());
 		}
 	}
 }

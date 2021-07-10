@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CIAHome.Shared.Entities;
+using CIAHome.Shared.Models;
 using Xunit;
 
 namespace Tests.Unit
 {
 	public class TodoSpec
 	{
-		private Todo _sut;
+		private TodoItem _sut;
 		
 		public TodoSpec()
 		{
-			_sut = new Todo();
+			_sut = new TodoItem();
 		}
 		
 		[Fact]
@@ -26,7 +26,7 @@ namespace Tests.Unit
 		public void Id_is_unique()
 		{
 			IList<string> ids = new List<string>();
-			Parallel.For(0, 10, _ => ids.Add(new Todo().Id));
+			Parallel.For(0, 10, _ => ids.Add(new TodoItem().Id));
 
 			Assert.Equal(ids, ids.Distinct());
 		}

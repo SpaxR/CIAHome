@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using CIAHome.Shared.Model;
+using CIAHome.Shared.Models;
 
 namespace CIAHome.Shared.Interfaces
 {

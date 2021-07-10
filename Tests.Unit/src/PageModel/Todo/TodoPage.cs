@@ -16,7 +16,7 @@ namespace Tests.Unit.PageModel
 			=> Root.FindComponents<TodoListCard>().Select(card => new TodoListCardComponent(card));
 
 		public IEnumerable<TodoItemComponent> TodoItems
-			=> Root.FindComponents<TodoItem>().Select(item => new TodoItemComponent(item));
+			=> Root.FindComponents<TodoListItem>().Select(item => new TodoItemComponent(item));
 		
 		public TodoPage(IRenderedComponent<TodoMaster> root) : base(root)
 		{

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
-using CIAHome.Shared.Entities;
 using CIAHome.Shared.Interfaces;
+using CIAHome.Shared.Models;
 
 namespace CIAHome.Client.Repositories
 {
@@ -30,7 +30,7 @@ namespace CIAHome.Client.Repositories
 		/// <inheritdoc />
 		public Task<TodoList> Find(string id)
 		{
-			return _storage.GetItemAsync<TodoList>(id ?? nameof(Todo)).AsTask();
+			return _storage.GetItemAsync<TodoList>(id ?? nameof(TodoItem)).AsTask();
 		}
 
 		/// <inheritdoc />

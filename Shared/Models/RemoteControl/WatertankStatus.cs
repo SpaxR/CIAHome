@@ -1,4 +1,4 @@
-namespace CIAHome.Shared.Model
+namespace CIAHome.Shared.Models
 {
 	public class WatertankStatus
 	{

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using CIAHome.Server.Hubs;
-using CIAHome.Shared.Model;
+using CIAHome.Shared.Models;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace FakeData

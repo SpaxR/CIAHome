@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace CIAHome.Server.Data
+namespace CIA.Infrastructure
 {
 	public class CIAContext : IdentityDbContext<CIAUser>
 	{

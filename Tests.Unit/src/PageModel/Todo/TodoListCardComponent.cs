@@ -1,6 +1,6 @@
 ﻿using Bunit;
 using CIAHome.Client.Components.Todo;
-using CIAHome.Shared.Entities;
+using CIAHome.Shared.Models;
 
 namespace Tests.Unit.PageModel
 {

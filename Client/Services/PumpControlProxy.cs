@@ -1,9 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using CIAHome.Shared;
-using CIAHome.Shared.EventArgs;
 using CIAHome.Shared.Interfaces;
-using CIAHome.Shared.Model;
+using CIAHome.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;

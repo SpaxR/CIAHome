@@ -1,4 +1,5 @@
-﻿@using CIAHome.Shared.Entities
+﻿@using Microsoft.AspNetCore.Components
+@using CIAHome.Core.Entities
 <MudListItem>
     @if (_isEditing)
     {
@@ -8,8 +9,8 @@
     else
     {
         <MudButton Style="text-transform: none;" OnClick="ToggleChecked">
-            <MudCheckBox @bind-Checked="@Todo.Checked" />
-            <MudText Style="@(Todo.Checked ? "text-decoration:line-through" : "")">
+            <MudCheckBox @bind-Checked="@Todo.IsChecked" />
+            <MudText Style="@(Todo.IsChecked ? "text-decoration:line-through" : "")">
                 @Todo.Text
             </MudText>
         </MudButton>
@@ -21,7 +22,7 @@
 @code {
 
     [Parameter]
-    public Todo Todo { get; set; }
+    public TodoItem Todo { get; set; }
 
     [Parameter]
     public EventCallback<MouseEventArgs> OnDelete { get; set; }
@@ -39,14 +40,14 @@
 
     private async Task ToggleChecked()
     {
-        Todo.Checked = !Todo.Checked;
-        await OnUpdate.InvokeAsync(new EventArgs());
+        Todo.IsChecked = !Todo.IsChecked;
+        await OnUpdate.InvokeAsync(EventArgs.Empty);
     }
 
     private async Task ToggleEditing()
     {
         if (_isEditing)
-            await OnUpdate.InvokeAsync(new EventArgs());
+            await OnUpdate.InvokeAsync(EventArgs.Empty);
 
         _isEditing = !_isEditing;
     }

@@ -3,7 +3,7 @@
 @inject IPumpControlService PumpControlProxy
 
 <MudGrid>
-    <MudItem xs="12">
+    <MudItem>
         <StatusOverlay Status="WatertankLoadingStatus">
             <TankImage Width="200px;" FilledPercentage="@((int) (100 / Watertank.VolumeTotal * Watertank.VolumeFilled))"/>
         </StatusOverlay>

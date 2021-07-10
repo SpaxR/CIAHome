@@ -5,14 +5,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.5" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.5" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.5" />
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\CIA.Infrastructure\CIA.Infrastructure.csproj" />
         <ProjectReference Include="..\Client\CIAHome.Client.csproj" />
         <ProjectReference Include="..\Shared\CIAHome.Shared.csproj" />
     </ItemGroup>

@@ -3,15 +3,14 @@ using System.Threading.Tasks;
 using Bunit;
 using CIAHome.Client.Components;
 using CIAHome.Client.Pages;
-using CIAHome.Shared.EventArgs;
 using CIAHome.Shared.Interfaces;
-using CIAHome.Shared.Model;
+using CIAHome.Shared.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using MudBlazor.Services;
 using Xunit;
 
-namespace Tests.Unit
+namespace Tests.Unit.Pages
 {
 	public class PumpControlSpec : TestContext
 	{

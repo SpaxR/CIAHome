@@ -1,9 +1,8 @@
-﻿@using CIAHome.Shared.Entities
-<MudCard @onclick="OnClick">
+﻿<MudCard @onclick="OnClick">
     <MudCardHeader>
         <CardHeaderContent>
             <MudText>@List.Text</MudText>
-            <MudText>@(List.Todos.Any() ? List.Todos.Count : "No") Todos</MudText>
+            <MudText>@(List.Todos.Any() ? List.Todos.Count() : "No") Todos</MudText>
         </CardHeaderContent>
         <CardHeaderActions>
             <MudIconButton Icon="@(Icons.Filled.Delete)" OnClick="OnDelete"></MudIconButton>

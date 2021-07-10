@@ -1,13 +1,13 @@
 ﻿using System;
 using Bunit;
 using CIAHome.Client.Components.Todo;
-using CIAHome.Shared.Entities;
+using CIAHome.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using Xunit;
 
-namespace Tests.Unit
+namespace Tests.Unit.Components
 {
 	public class TodoListCardSpec : TestContext
 	{
@@ -26,14 +26,15 @@ namespace Tests.Unit
 		[Fact]
 		public void shows_text_of_list()
 		{
+			_list.Text = "SOME TEXT";
 			Assert.Contains(_list.Text, SUT.Markup);
 		}
 
 		[Fact]
 		public void shows_amount_of_Todos_in_list()
 		{
-			_list.Todos.Add(new Todo());
-			_list.Todos.Add(new Todo());
+			_list.AddTodo(new TodoItem());
+			_list.AddTodo(new TodoItem());
 
 			Assert.Contains("2 Todos", SUT.Markup);
 		}

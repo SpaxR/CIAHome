@@ -1,15 +1,15 @@
 ﻿using Bunit;
 using CIAHome.Client.Components.Todo;
-using CIAHome.Shared.Entities;
+using CIAHome.Shared.Models;
 
 namespace Tests.Unit.PageModel
 {
-	public class TodoItemComponent : ComponentBase<TodoItem>
+	public class TodoItemComponent : ComponentBase<TodoListItem>
 	{
-		public Todo Todo => Root.Instance.Todo;
+		public TodoItem Todo => Root.Instance.Todo;
 
 		/// <inheritdoc />
-		public TodoItemComponent(IRenderedComponent<TodoItem> root) : base(root) { }
+		public TodoItemComponent(IRenderedComponent<TodoListItem> root) : base(root) { }
 
 		public void InvokeDelete() => Root.InvokeAsync(Root.Instance.OnDelete.InvokeAsync);
 	}

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CIAHome.Shared.Entities;
+using CIAHome.Shared.Models;
 using Xunit;
 
 namespace Tests.Unit

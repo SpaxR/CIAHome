@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace CIAHome.Server.Data
+namespace CIA.Infrastructure
 {
 	public class CIAUser : IdentityUser
 	{

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Bunit;
 using CIAHome.Client.Components.Todo;
 using CIAHome.Client.Pages.Todo;
-using CIAHome.Shared.Entities;
 using CIAHome.Shared.Interfaces;
+using CIAHome.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +12,7 @@ using Moq;
 using MudBlazor;
 using Xunit;
 
-namespace Tests.Unit
+namespace Tests.Unit.Pages
 {
 	public sealed class TodoMasterSpec : TestContext
 	{
