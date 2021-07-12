@@ -31,10 +31,7 @@ namespace CIAHome.Server.Controllers
 
 			if (await _userManager.FindByNameAsync(model.Username) == null)
 			{
-				await _userManager.CreateAsync(new CIAUser
-				{
-					UserName = model.Username
-				}, model.Password);
+				return Unauthorized();
 			}
 
 			var result =

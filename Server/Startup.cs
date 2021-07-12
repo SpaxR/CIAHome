@@ -21,15 +21,13 @@ namespace CIAHome.Server
 
 		public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services
-				.AddDbContext<CIAContext>(_ => _.UseSqlServer("Server=localhost;User Id=sa;Password=yaq1YAQ!;"))
-				.AddDbContext<TodoContext>(_ => _.UseSqlServer("Server=localhost;User Id=sa;Password=yaq1YAQ!;"))
-				.AddDbContext<RemoteControlContext>(_ => _.UseSqlServer("Server=localhost;User Id=sa;Password=yaq1YAQ!;"))
-				.AddDbContext<PantryContext>(_ => _.UseSqlServer("Server=localhost;User Id=sa;Password=yaq1YAQ!;"));
+				.AddDbContext<CIAContext>(_ => _.UseSqlServer(Configuration.GetConnectionString("UserDB")))
+				.AddDbContext<TodoContext>(_ => _.UseSqlServer(Configuration.GetConnectionString("TodoDB")))
+				.AddDbContext<RemoteControlContext>(_ => _.UseSqlServer(Configuration.GetConnectionString("RemoteControlDB")))
+				.AddDbContext<PantryContext>(_ => _.UseSqlServer(Configuration.GetConnectionString("PantryDB")));
 
 			services.AddIdentity<CIAUser, IdentityRole>()
 					.AddEntityFrameworkStores<CIAContext>();

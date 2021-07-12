@@ -1,26 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CIA.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace CIAHome.Server
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+	public static class Program
+	{
+		public static void Main(string[] args)
+		{
+			CreateHostBuilder(args)
+				.Build()
+				.InitializeUserContext()
+				.InitializeContext<RemoteControlContext>()
+				.InitializeContext<TodoContext>()
+				.InitializeContext<PantryContext>()
+				.Run();
+		}
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+		private static IHostBuilder CreateHostBuilder(string[] args)
+		{
+			return Host
+				   .CreateDefaultBuilder(args)
+				   .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+		}
+	}
 }
