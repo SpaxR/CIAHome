@@ -7,7 +7,7 @@ namespace CIA.Infrastructure
 	public class TodoItem : ITodoItem
 	{
 		[Key]
-		public string Id { get; set; } = Guid.NewGuid().ToString("N");
+		public Guid Id { get; set; }
 
 		public string Text    { get; set; } = string.Empty;
 		public bool   IsChecked { get; set; }

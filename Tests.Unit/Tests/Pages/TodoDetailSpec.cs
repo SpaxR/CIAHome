@@ -26,14 +26,14 @@ namespace Tests.Unit.Pages
 		{
 			get
 			{
-				_sut ??= RenderComponent<TodoDetail>((nameof(TodoDetail.Id), _list.Id));
+				_sut ??= RenderComponent<TodoDetail>((nameof(TodoDetail.Id), _list.Id.ToString()));
 				return _sut;
 			}
 		}
 
 		public TodoDetailSpec()
 		{
-			_repositoryMock.Setup(repository => repository.Find(_list.Id)).ReturnsAsync(_list);
+			_repositoryMock.Setup(repository => repository.Find(_list.Id.ToString())).ReturnsAsync(_list);
 
 			Services.AddScoped(_ => _repositoryMock.Object);
 			Services.AddScoped<NavigationManager>(_ => _navigation);

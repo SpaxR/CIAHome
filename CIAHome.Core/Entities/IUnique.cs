@@ -1,7 +1,9 @@
+using System;
+
 namespace CIAHome.Core.Entities
 {
 	public interface IUnique
 	{
-		public string Id { get; set; }
+		public Guid Id { get; set; }
 	}
 }

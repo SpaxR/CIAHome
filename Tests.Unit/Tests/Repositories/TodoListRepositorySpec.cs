@@ -19,16 +19,18 @@ namespace Tests.Unit.Repositories
 			_sut = new TodoListRepository(_storageMock.Object);
 		}
 
-		private void SetupLists(params TodoList[] lists)
+		private TodoList[] SetupLists(params TodoList[] lists)
 		{
 			_storageMock.Setup(storage => storage.GetItemAsync<string[]>(nameof(TodoList)))
-						.ReturnsAsync(lists.Select(list => list.Id).ToArray);
+						.ReturnsAsync(lists.Select(list => list.Id.ToString()).ToArray);
 
 			foreach (TodoList list in lists)
 			{
-				_storageMock.Setup(storage => storage.GetItemAsync<TodoList>(list.Id))
+				_storageMock.Setup(storage => storage.GetItemAsync<TodoList>(list.Id.ToString()))
 							.ReturnsAsync(list);
 			}
+
+			return lists;
 		}
 
 
@@ -45,7 +47,7 @@ namespace Tests.Unit.Repositories
 		{
 			var result = await _sut.Create();
 
-			_storageMock.Verify(s => s.SetItemAsync(result.Id, result), Times.Once);
+			_storageMock.Verify(s => s.SetItemAsync(result.Id.ToString(), result), Times.Once);
 		}
 
 		[Fact]
@@ -53,14 +55,13 @@ namespace Tests.Unit.Repositories
 		{
 			var result = await _sut.Create();
 
-			_storageMock.Verify(storage => storage.SetItemAsync(nameof(TodoList), new[] { result.Id }));
+			_storageMock.Verify(storage => storage.SetItemAsync(nameof(TodoList), new[] { result.Id.ToString() }));
 		}
 
 		[Fact]
 		public async Task Find_returns_TodoList_matching_Predicate()
 		{
-			var list = new TodoList { Id = "SOME ID" };
-			SetupLists(list);
+			var list = SetupLists(new TodoList { Id = Guid.Empty }).First();
 
 			var result = await _sut.Find(t => t.Id.Equals(list.Id));
 
@@ -81,19 +82,18 @@ namespace Tests.Unit.Repositories
 		[Fact]
 		public async Task Find_Id_returns_TodoList_with_specified_Id()
 		{
-			var list = new TodoList { Id = "SOME ID" };
-			SetupLists(list);
+			var list = SetupLists(new TodoList { Id = Guid.Empty }).First();
 
-			var result = await _sut.Find(list.Id);
+			var result = await _sut.Find(list.Id.ToString());
 
 			Assert.Equal(list.Id, result.Id);
-			_storageMock.Verify(storage => storage.GetItemAsync<TodoList>(list.Id));
+			_storageMock.Verify(storage => storage.GetItemAsync<TodoList>(list.Id.ToString()));
 		}
 
 		[Fact]
 		public async Task Find_Id_withNull_returns_uncategorized_TodoList()
 		{
-			var list = new TodoList { Id = null };
+			var list = new TodoList { Id = Guid.Empty };
 			list.AddTodo(new TodoItem());
 
 			_storageMock.Setup(storage => storage.GetItemAsync<TodoList>(nameof(TodoItem))).ReturnsAsync(list);
@@ -106,12 +106,14 @@ namespace Tests.Unit.Repositories
 		[Fact]
 		public async Task All_returns_all_lists()
 		{
-			var lists = new TodoList[] { new() { Id = "1" }, new() { Id = "2" }, new() { Id = "3" } };
-			SetupLists(lists);
+			var lists = SetupLists(
+				new TodoList { Id = Guid.NewGuid() },
+				new TodoList { Id = Guid.NewGuid() },
+				new TodoList { Id = Guid.NewGuid() });
 
 			var result = await _sut.All();
 
-			Assert.Equal(lists.ToList(), result);
+			Assert.Equal(lists, result);
 		}
 
 		[Fact]
@@ -132,7 +134,7 @@ namespace Tests.Unit.Repositories
 
 			await _sut.Update(list);
 
-			_storageMock.Verify(storage => storage.SetItemAsync(list.Id, list));
+			_storageMock.Verify(storage => storage.SetItemAsync(list.Id.ToString(), list));
 		}
 
 		[Fact]
@@ -142,36 +144,33 @@ namespace Tests.Unit.Repositories
 
 			await _sut.Update(list);
 
-			_storageMock.Verify(storage => storage.SetItemAsync(nameof(TodoList), new[] { list.Id }));
+			_storageMock.Verify(storage => storage.SetItemAsync(nameof(TodoList), new[] { list.Id.ToString() }));
 		}
 
 		[Fact]
 		public async Task Update_does_not_duplicate_id_in_Storage_List()
 		{
-			var list = new TodoList();
-			SetupLists(list);
+			var list = SetupLists(new TodoList()).First();
 
 			await _sut.Update(list);
 
-			_storageMock.Verify(storage => storage.SetItemAsync(nameof(TodoList), new[] { list.Id }));
+			_storageMock.Verify(storage => storage.SetItemAsync(nameof(TodoList), new[] { list.Id.ToString() }));
 		}
 
 		[Fact]
 		public async Task Delete_removes_TodoList_from_Storage()
 		{
-			var list = new TodoList();
-			SetupLists(list);
+			var list = SetupLists(new TodoList()).First();
 
 			await _sut.Delete(list);
 
-			_storageMock.Verify(storage => storage.RemoveItemAsync(list.Id));
+			_storageMock.Verify(storage => storage.RemoveItemAsync(list.Id.ToString()));
 		}
 
 		[Fact]
 		public async Task Delete_removes_id_from_Storage_List()
 		{
-			var list = new TodoList();
-			SetupLists(list);
+			var list = SetupLists(new TodoList()).First();
 
 			await _sut.Delete(list);
 

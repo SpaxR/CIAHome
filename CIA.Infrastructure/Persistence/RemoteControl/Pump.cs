@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using CIAHome.Core.Entities;
 
@@ -7,7 +8,7 @@ namespace CIA.Infrastructure
 	{
 		/// <inheritdoc />
 		[Key]
-		public string Id { get; set; }
+		public Guid Id { get; set; }
 
 		/// <inheritdoc />
 		public bool IsRunning { get; set; }

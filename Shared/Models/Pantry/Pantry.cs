@@ -1,3 +1,4 @@
+using System;
 using CIAHome.Core.Entities;
 
 namespace CIAHome.Shared.Models
@@ -5,6 +6,6 @@ namespace CIAHome.Shared.Models
 	public class Pantry : IPantry
 	{
 		/// <inheritdoc />
-		public string Id { get; set; }
+		public Guid Id { get; set; }
 	}
 }

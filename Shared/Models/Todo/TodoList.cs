@@ -7,7 +7,7 @@ namespace CIAHome.Shared.Models
 	public class TodoList : Core.Entities.ITodoList<TodoItem>
 	{
 		/// <inheritdoc />
-		public string Id { get; set; } = Guid.NewGuid().ToString("N");
+		public Guid Id { get; set; }
 
 		/// <inheritdoc />
 		public string Text { get; set; } = "Neue Liste";

@@ -56,8 +56,8 @@ namespace CIAHome.Client.Repositories
 		{
 			var list = new TodoList();
 
-			await _storage.SetItemAsync(list.Id, list);
-			await UpdateIDs(ids => ids.Append(list.Id));
+			await _storage.SetItemAsync(list.Id.ToString(), list);
+			await UpdateIDs(ids => ids.Append(list.Id.ToString()));
 
 			return list;
 		}
@@ -65,15 +65,15 @@ namespace CIAHome.Client.Repositories
 		/// <inheritdoc />
 		public async Task Update(TodoList list)
 		{
-			await _storage.SetItemAsync(list.Id, list);
-			await UpdateIDs(ids => ids.Append(list.Id).Distinct());
+			await _storage.SetItemAsync(list.Id.ToString(), list);
+			await UpdateIDs(ids => ids.Append(list.Id.ToString()).Distinct());
 		}
 
 		/// <inheritdoc />
 		public async Task Delete(TodoList list)
 		{
-			await _storage.RemoveItemAsync(list.Id);
-			await UpdateIDs(ids => ids.Except(new[] {list.Id}));
+			await _storage.RemoveItemAsync(list.Id.ToString());
+			await UpdateIDs(ids => ids.Except(new[] {list.Id.ToString()}));
 		}
 
 		private async Task UpdateIDs(Func<IEnumerable<string>, IEnumerable<string>> update)
