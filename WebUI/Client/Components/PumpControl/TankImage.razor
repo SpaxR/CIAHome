@@ -1,0 +1,48 @@
+@namespace WebUI.Client.Components
+@using MudBlazor.Utilities
+@inherits MudComponentBase
+
+<div @attributes="UserAttributes" class="@Class" style="@Stylename">
+    <img src="@Watertank_Filled" style="clip-path: inset(@(100 - FilledPercentage)% 0 0 0);"
+         width="100%" height="100%" alt="Filled Percentage"/>
+</div>
+
+@code {
+
+    [Parameter]
+    public int FilledPercentage { get; set; }
+
+        private const string Watertank_Empty = "/img/Watertank (White)/Water Tank.png";
+        private const string Watertank_Filled = "/img/Watertank (Blue)/Water Tank.png";
+
+    protected string Stylename =>
+        new StyleBuilder()
+            .AddStyle("background", $"url('{Watertank_Empty}') no-repeat center / contain")
+            .AddStyle("height", $"{Height}", !string.IsNullOrEmpty(Height))
+            .AddStyle("width", $"{Width}", !string.IsNullOrEmpty(Width))
+            .AddStyle("max-height", $"{MaxHeight}", !string.IsNullOrEmpty(MaxHeight))
+            .AddStyle("max-width", $"{MaxWidth}", !string.IsNullOrEmpty(MaxWidth))
+            .AddStyle("min-height", $"{MinHeight}", !string.IsNullOrEmpty(MinHeight))
+            .AddStyle("min-width", $"{MinWidth}", !string.IsNullOrEmpty(MinWidth))
+            .AddStyle(Style)
+            .Build();
+
+    [Parameter]
+    public string Height { get; set; }
+
+    [Parameter]
+    public string Width { get; set; }
+
+    [Parameter]
+    public string MaxHeight { get; set; }
+
+    [Parameter]
+    public string MaxWidth { get; set; }
+
+    [Parameter]
+    public string MinHeight { get; set; }
+
+    [Parameter]
+    public string MinWidth { get; set; }
+
+}

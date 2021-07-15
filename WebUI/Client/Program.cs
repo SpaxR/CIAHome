@@ -1,0 +1,51 @@
+using System;
+using System.Threading.Tasks;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using MudBlazor.Services;
+using WebUI.Client.Repositories;
+using WebUI.Client.Services;
+using WebUI.Shared.Interfaces;
+using WebUI.Shared.Models;
+
+namespace WebUI.Client
+{
+	public class Program
+	{
+		public static async Task Main(string[] args)
+		{
+			var builder = WebAssemblyHostBuilder.CreateDefault(args);
+			builder.RootComponents.Add<App>("#app");
+
+			builder.Services.AddAuthorizationCore();
+
+			// builder.Services.AddScoped(_ => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
+			builder.Services.AddHttpClient(string.Empty,
+										   client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
+			// MudBlazor
+			builder.Services.AddMudServices();
+			builder.Services.AddMudBlazorDialog();
+			builder.Services.AddMudBlazorSnackbar();
+
+			// Blazored.LocalStorage
+			builder.Services.AddBlazoredLocalStorage();
+
+			// CIA Service
+			builder.Services.AddScoped<CIAuthenticationService>();
+			builder.Services.AddScoped<AuthenticationStateProvider>(
+				provider => provider.GetRequiredService<CIAuthenticationService>());
+			builder.Services.AddScoped<IAuthenticationService>(
+				provider => provider.GetRequiredService<CIAuthenticationService>());
+
+			builder.Services.AddScoped<IThemeProvider, ThemeProvider>();
+			builder.Services.AddScoped<IAsyncRepository<TodoList>, TodoListRepository>();
+			builder.Services.AddScoped<IPumpControlService, PumpControlProxy>();
+			
+
+			await builder.Build().RunAsync();
+		}
+	}
+}

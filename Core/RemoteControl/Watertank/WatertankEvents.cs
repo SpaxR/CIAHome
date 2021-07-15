@@ -1,0 +1,3 @@
+namespace CIAHome.Core.RemoteControl
+{
+}
