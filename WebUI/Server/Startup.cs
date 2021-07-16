@@ -24,13 +24,10 @@ namespace WebUI.Server
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services
-				.AddDbContext<CIAContext>(_ => _.UseSqlServer(Configuration.GetConnectionString("UserDB")));
-			// 	.AddDbContext<TodoContext>(_ => _.UseSqlServer(Configuration.GetConnectionString("TodoDB")))
-			// 	.AddDbContext<RemoteControlContext>(_ => _.UseSqlServer(Configuration.GetConnectionString("RemoteControlDB")))
-			// 	.AddDbContext<PantryContext>(_ => _.UseSqlServer(Configuration.GetConnectionString("PantryDB")));
+				.AddDbContext<DatabaseContext>(_ => _.UseSqlServer(Configuration.GetConnectionString("UserDB")));
 
 			services.AddIdentity<IdentityUser, IdentityRole>()
-					.AddEntityFrameworkStores<CIAContext>();
+					.AddEntityFrameworkStores<DatabaseContext>();
 
 			services.Configure<IdentityOptions>(options =>
 			{

@@ -1,4 +1,4 @@
 namespace CIAHome.Core
 {
-	// public class Pantry : EntityBase { }
+	public class Pantry : EntityBase { }
 }

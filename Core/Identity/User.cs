@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace CIAHome.Core
 {
-	// public class User : EntityBase
-	// {
-	// 	public string UserName { get; set; }
-	// }
+	public class User : IdentityUser
+	{
+		public string UserName { get; set; }
+	}
 }

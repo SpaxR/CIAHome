@@ -1,7 +1,7 @@
 namespace CIAHome.Core
 {
-	// public class Pump : EntityBase
-	// {
-	// 	public bool IsRunning { get; }
-	// }
+	public class Pump : EntityBase
+	{
+		// 	public bool IsRunning { get; }
+	}
 }

@@ -9,10 +9,7 @@ namespace WebUI.Server
 		{
 			CreateHostBuilder(args)
 				.Build()
-				.InitializeUserContext()
-				// .InitializeContext<RemoteControlContext>()
-				// .InitializeContext<TodoContext>()
-				// .InitializeContext<PantryContext>()
+				.InitializeContext()
 				.Run();
 		}
 
