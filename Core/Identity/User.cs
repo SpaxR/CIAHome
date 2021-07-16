@@ -1,4 +1,4 @@
-namespace CIAHome.Core.Identity
+namespace CIAHome.Core
 {
 	// public class User : EntityBase
 	// {

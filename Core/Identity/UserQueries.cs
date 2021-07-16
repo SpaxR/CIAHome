@@ -1,3 +1,3 @@
-namespace CIAHome.Core.Identity
+namespace CIAHome.Core
 {
 }

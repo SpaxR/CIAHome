@@ -1,4 +1,4 @@
-namespace CIAHome.Core.Todos
+namespace CIAHome.Core
 {
 	// public class TodoItemEvent : INotification
 	// {

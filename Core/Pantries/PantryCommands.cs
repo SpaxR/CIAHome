@@ -1,3 +1,0 @@
-namespace CIAHome.Core.Pantries
-{
-}

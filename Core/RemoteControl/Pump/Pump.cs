@@ -1,4 +1,4 @@
-namespace CIAHome.Core.RemoteControl
+namespace CIAHome.Core
 {
 	// public class Pump : EntityBase
 	// {

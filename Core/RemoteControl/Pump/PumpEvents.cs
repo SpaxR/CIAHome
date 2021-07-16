@@ -1,3 +1,3 @@
-namespace CIAHome.Core.RemoteControl
+namespace CIAHome.Core
 {
 }
