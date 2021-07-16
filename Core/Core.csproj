@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<RootNamespace>CIAHome.Core</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="CIAHome.Core.csproj.DotSettings" />
+	  <None Remove="Core.csproj.DotSettings" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="MediatR" Version="9.0.0" />
+	  <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="5.0.7" />
+	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Todos" />
+	</ItemGroup>
+
+</Project>

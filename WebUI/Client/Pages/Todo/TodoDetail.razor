@@ -1,0 +1,74 @@
+﻿@page "/todos/{id}"
+@inject IAsyncRepository<TodoList> TodoRepository
+@inject NavigationManager Navigation
+
+<MudIconButton Icon="@(Icons.Sharp.ArrowBack)" OnClick="@(() => Navigation.NavigateTo("/todos"))"/>
+
+@if (_isLoading)
+{
+    <MudSkeleton Height="5em" Width="20em"/>
+    <MudSkeleton Height="20em" SkeletonType="SkeletonType.Rectangle"/>
+}
+else
+{
+    @if (_isEditing)
+    {
+        <MudInput @bind-Value="_list.Text"/>
+        <MudIconButton Icon="@(Icons.Sharp.Check)" OnClick="TextChanged"/>
+    }
+    else
+    {
+        <MudText Inline="true">@_list.Text</MudText>
+        <MudIconButton Icon="@(Icons.Sharp.Create)" OnClick="() => _isEditing = true"/>
+    }
+
+
+    <MudList>
+        @foreach (var todo in _list.Todos)
+        {
+            <TodoListItem Todo="@todo"
+                      OnUpdate="@(() => TodoRepository.Update(_list))"
+                      OnDelete="@(() => DeleteTodo(todo))"/>
+        }
+    </MudList>
+
+    <MudButton OnClick="AddTodo">Add Todo</MudButton>
+}
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+
+    private TodoList _list;
+
+    private bool _isLoading = true;
+
+    private bool _isEditing;
+
+    /// <inheritdoc />
+    protected override async Task OnInitializedAsync()
+    {
+        _list = await TodoRepository.Find(Id);
+        _isLoading = false;
+    }
+
+    private async Task AddTodo()
+    {
+        _list.AddTodo(new TodoItem());
+        await TodoRepository.Update(_list);
+    }
+
+    private async Task DeleteTodo(TodoItem todo)
+    {
+        _list.RemoveTodo(todo);
+        await TodoRepository.Update(_list);
+    }
+
+    private async Task TextChanged()
+    {
+        await TodoRepository.Update(_list);
+        _isEditing = false;
+    }
+
+}

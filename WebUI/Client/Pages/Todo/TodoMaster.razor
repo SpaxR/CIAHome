@@ -1,0 +1,47 @@
+﻿@page "/todos"
+@inject IAsyncRepository<TodoList> TodoListRepository
+@inject NavigationManager Navigation
+
+@if (_lists.Any())
+{
+    <MudGrid Justify="Justify.SpaceEvenly">
+        @foreach (var list in _lists)
+        {
+            <MudItem>
+                <TodoListCard List="@list" 
+                              OnDelete="@(() => DeleteList(list))" 
+                              @onclick="@(() => Navigation.NavigateTo("/todos/" + list.Id))"/>
+            </MudItem>
+        }
+    </MudGrid>
+}
+
+<MudButton OnClick="AddList">Add List</MudButton>
+
+@code {
+
+    private IEnumerable<TodoList> _lists = Enumerable.Empty<TodoList>();
+
+    /// <inheritdoc />
+    protected override async Task OnInitializedAsync()
+    {
+        _lists = await TodoListRepository.All();
+    }
+
+    private async Task AddList()
+    {
+        await TodoListRepository.Create();
+        _lists = await TodoListRepository.All();
+    }
+
+    private async Task DeleteList(TodoList list)
+    {
+        await TodoListRepository.Delete(list);
+        _lists = await TodoListRepository.All();
+    }
+
+
+
+
+
+}
